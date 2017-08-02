@@ -1,0 +1,67 @@
+appuser_login:
+    pattern:  /login
+    defaults: { _controller: AppUserBundle:Default:login }
+
+appuser_login_check:
+    pattern:  /login_check
+
+appuser_logout:
+    pattern:  /logout
+
+appuser_list:
+    pattern:  /lista/
+    defaults: { _controller: AppUserBundle:Default:list}
+
+appuser_create:
+    pattern:  /crear/
+    defaults: { _controller: AppUserBundle:Default:create}
+
+appuser_edit:
+    pattern:  /{id}/editar/
+    defaults: { _controller: AppUserBundle:Default:edit}
+    options:
+        expose: true
+
+appuser_details:
+    pattern:  /perfil/{id}/detalles/
+    defaults: { _controller: AppUserBundle:Default:details}
+    options:
+        expose: true
+
+appuser_save:
+    pattern:  /salvar/
+    defaults: { _controller: AppUserBundle:Default:save}
+
+appuser_img:
+    pattern:  /perfil/img/
+    defaults: { _controller: AppUserBundle:Default:imgUpload}
+
+appuser_rem:
+    pattern:  /perfil/{userId}/img_remove/{id}
+    defaults: { _controller: AppUserBundle:Default:imgRemove}
+
+appuser_delete:
+    pattern:  /{id}/borrar/
+    defaults: { _controller: AppUserBundle:Default:delete}
+    options:
+        expose: true
+
+appuser_activate:
+    pattern:  /{id}/activar/
+    defaults: { _controller: AppUserBundle:Default:activate}
+    options:
+        expose: true
+
+appuser_editPass:
+    pattern:  /{id}/contrasenna/edit
+    defaults: { _controller: AppUserBundle:Default:editPass}
+
+appuser_lock:
+    pattern:  /lock/
+    defaults: { _controller: AppUserBundle:Default:lock}
+
+appusers_ajax_listado:
+    path: /getAppUsersList/
+    defaults: {_controller: AppUserBundle:Default:getAppUsersList}
+    options:
+        expose: true

@@ -1,0 +1,7 @@
+parameters:
+#    referencia.example.class: BMN\ReferenciaBundle\Example
+
+services:
+#    referencia.example:
+#        class: %referencia.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

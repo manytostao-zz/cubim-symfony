@@ -1,0 +1,7 @@
+parameters:
+#    bibliografia.example.class: BMN\BibliografiaBundle\Example
+
+services:
+#    bibliografia.example:
+#        class: %bibliografia.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

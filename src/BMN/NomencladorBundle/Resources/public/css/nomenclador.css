@@ -1,0 +1,28 @@
+/*
+*@author firomerorom4@gmail.com
+*
+*/
+
+* {
+    color: black;
+}
+
+.btn.btn-mini.pull-right.add {
+    margin-top: -1%;
+}
+
+.first-row {
+    background: none repeat scroll 0 0 #fff;
+    border: 0 solid #e4e4e4;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.inner {
+    background: none repeat scroll 0 0 #fff;
+    border: 0 solid #e4e4e4;
+    padding-left: 10px;
+    padding-right: 15px;
+    position: relative;
+    min-height: 800px;
+}

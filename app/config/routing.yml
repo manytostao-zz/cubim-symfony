@@ -1,0 +1,54 @@
+lectura:
+    resource: "@LecturaBundle/Resources/config/routing.yml"
+    prefix:   /lectura/
+
+dsi:
+    resource: "@DSIBundle/Resources/config/routing.yml"
+    prefix:   /dsi/
+
+bibliografia:
+    resource: "@BibliografiaBundle/Resources/config/routing.yml"
+    prefix:   /bibliografia/
+
+navegacion:
+    resource: "@NavegacionBundle/Resources/config/routing.yml"
+    prefix:   /navegacion/
+
+reportes:
+    resource: "@ReportesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+referencia:
+    resource: "@ReferenciaBundle/Resources/config/routing.yml"
+    prefix:   /referencia/
+
+recepcion:
+    resource: "@RecepcionBundle/Resources/config/routing.yml"
+    prefix:   /recepcion/
+
+otros:
+    resource: "@OtrosBundle/Resources/config/routing.yml"
+    prefix:   /
+
+nomenclador:
+    resource: "@NomencladorBundle/Resources/config/routing.yml"
+    prefix:   /nomenclador/
+
+usuario:
+    resource: "@UsuarioBundle/Resources/config/routing.yml"
+    prefix:   /usuario/
+
+appuser:
+    resource: "@AppUserBundle/Resources/config/routing.yml"
+    prefix:   /appuser/
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+pagina_principal:
+    path: /
+    defaults: { _controller: AppUserBundle:Default:login }
+
+contact_us:
+    path: /contact_us
+    defaults: {_controller: OtrosBundle:Default:contact_us}

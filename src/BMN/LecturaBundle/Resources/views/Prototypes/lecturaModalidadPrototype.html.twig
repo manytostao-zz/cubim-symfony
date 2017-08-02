@@ -1,0 +1,25 @@
+<!--<hr style="border-width: 10px"/>-->
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="caption"> Modalidad</div>
+        <div class="tools">
+            <a id="addModalidadDetalle" href="javascript:;" title="A&ntilde;adir detalle" class="gray"
+               onclick="Global.doThisAfterInsert()">
+                <i class="fa fa-plus"></i>
+            </a>
+            <a class="collapse" href="javascript:;"> </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="col-md-4">Modalidad</div>
+        <div class="col-md-8">
+            {{ form_widget(form.modalidad,{ 'attr': {'class':'form-control input-large'}}) }}
+        </div>
+        <div class="clearfix"></div>
+        <br />
+        <ul id="modalidadDetalle" class="modalidadDetalle"
+            data-prototype="{% filter escape %}{% include 'LecturaBundle:Prototypes:modalidadDetallePrototype.html.twig' with {'form': form.modalidadDetalle.vars.prototype} %}{% endfilter %}"
+            style="list-style: none; padding-left: 16px; padding-right: 16px;">
+        </ul>
+    </div>
+</div>

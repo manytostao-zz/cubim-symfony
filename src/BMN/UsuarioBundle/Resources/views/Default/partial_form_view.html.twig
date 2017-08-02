@@ -1,0 +1,134 @@
+<br/>{{ form_start(formulario) }}
+{% if (form_errors(formulario)) %}
+    Validaciones Generales
+    <div class="error" style="width: 98%">{{ form_errors(formulario) }}</div>
+{% endif %}
+<div class="art-content-layout">
+    <div class="art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.nombres) }}</div>
+            {{ form_widget(formulario.nombres) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.nombres) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.apellidos) }}</div>
+            {{ form_widget(formulario.apellidos) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.apellidos) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.carnetId) }}</div>
+            {{ form_widget(formulario.carnetId) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.carnetId) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.carnetBib) }}</div>
+            {{ form_widget(formulario.carnetBib) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.carnetBib) }}</div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.email) }}</div>
+            {{ form_widget(formulario.email) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.email) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.telefono) }}</div>
+            {{ form_widget(formulario.telefono) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.telefono) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.tipoPro) }}</div>
+            {{ form_widget(formulario.tipoPro) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.tipoPro) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.especialidad) }}</div>
+            {{ form_widget(formulario.especialidad) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.especialidad) }}</div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.tipoUsua) }}</div>
+            {{ form_widget(formulario.tipoUsua) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.tipoUsua) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.profesion) }}</div>
+            {{ form_widget(formulario.profesion) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.profesion) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.cargo) }}</div>
+            {{ form_widget(formulario.cargo) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.cargo) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.fechaIns) }}</div>
+            {{ form_widget(formulario.fechaIns) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.fechaIns) }}</div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.categDoc) }}</div>
+            {{ form_widget(formulario.categDoc) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.categDoc) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.categInv) }}</div>
+            {{ form_widget(formulario.categInv) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.categInv) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.categOcup) }}</div>
+            {{ form_widget(formulario.categOcup) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.categOcup) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.categCien) }}</div>
+            {{ form_widget(formulario.categCien) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.categCien) }}</div>
+        </div>
+    </div>
+    <br/>
+
+    <div class="art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.institucion) }}</div>
+            {{ form_widget(formulario.institucion) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.institucion) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.dedicacion) }}</div>
+            {{ form_widget(formulario.dedicacion) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.dedicacion) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.experiencia) }}</div>
+            {{ form_widget(formulario.experiencia) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.experiencia) }}</div>
+        </div>
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div>{{ form_label(formulario.observaciones) }}</div>
+            {{ form_widget(formulario.observaciones) }}
+            <div class="error" style="width: 95%">{{ form_errors(formulario.observaciones) }}</div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+
+    <div class="art-content-layout-row">
+        <div class="art-layout-cell layout-item-0" style="width: 33.3%">
+            <div class="art-content-layout-row">
+                <div class="art-layout-cell layout-item-0" style="width: 5%">
+                    <input type="submit" value="{% if filtros is defined %}Filtrar {% else %}Guardar {% endif %}"
+                           class="art-button"/></div>
+{{ form_end(formulario) }}

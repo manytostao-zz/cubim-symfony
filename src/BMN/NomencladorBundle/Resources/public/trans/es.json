@@ -1,0 +1,27 @@
+$language =
+{
+"sProcessing":     "Procesando...",
+"sLengthMenu":     "Mostrar _MENU_ registros",
+"sZeroRecords":    "No se encontraron resultados",
+"sEmptyTable": "Ningun dato disponible en esta tabla",
+"sInfo":           "Mostrando registros del <b>_START_</b> al <b>_END_ </b> de un total de <b> _TOTAL_</b> registros",
+"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+"sInfoPostFix":    "",
+"sSearch":         "Filtrar:",
+"sUrl":            "",
+"sInfoThousands":  ",",
+"sLoadingRecords": "Cargando...",
+"oPaginate":
+{
+"sFirst":    '<span><i class="icon-double-angle-left"></i></span>',
+"sLast":     '<span><i class="icon-double-angle-right"></i></span>',
+"sNext":     '<span><i class="icon-angle-right"></i></span>',
+"sPrevious": '<span><i class="icon-angle-left"></i></span>',
+},
+"oAria":
+{
+"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+}
+};

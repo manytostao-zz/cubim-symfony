@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<!-- 
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.2.0
+Version: 3.1.3
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<!--[if IE 8]>
+<html lang="es" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="es" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="es">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8"/>
+    {% block title %}
+    {% endblock %}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <script src="{{ asset('metronic/assets/global/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
+    <link href="{{ asset('metronic/assets/global/plugins/pace/themes/pace-theme-barber-shop.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="{{ asset('metronic/assets/global/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/simple-line-icons/simple-line-icons.min.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/uniform/css/uniform.default.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    {% block page_style %}
+    {% endblock %}
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <link href="{{ asset('metronic/assets/global/css/components.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/css/plugins.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('metronic/assets/admin/layout/css/layout.css') }}" rel="stylesheet" type="text/css"/>
+    <link id="style_color" href="{{ asset('metronic/assets/admin/layout/css/themes/default.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/admin/layout/css/custom.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('local/bmn2.css') }}" rel="stylesheet" type="text/css"/>
+    <!-- END THEME STYLES -->
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<!-- BEGIN BODY -->
+<!-- DOC: Apply "page-header-fixed-mobile" and "page-footer-fixed-mobile" class to body element to force fixed header or footer in mobile devices -->
+<!-- DOC: Apply "page-sidebar-closed" class to the body and "page-sidebar-menu-closed" class to the sidebar menu element to hide the sidebar by default -->
+<!-- DOC: Apply "page-sidebar-hide" class to the body to make the sidebar completely hidden on toggle -->
+<!-- DOC: Apply "page-sidebar-closed-hide-logo" class to the body element to make the logo hidden on sidebar toggle -->
+<!-- DOC: Apply "page-sidebar-hide" class to body element to completely hide the sidebar on sidebar toggle -->
+<!-- DOC: Apply "page-sidebar-fixed" class to have fixed sidebar -->
+<!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
+<!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
+<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-fixed page-footer-fixed">
+<!-- BEGIN HEADER -->
+<div id="first" class="page-header navbar navbar-fixed-top">
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo" style="padding-left: 0">
+            <a href="#">
+                <img style="width: 190px; height: 46px; margin: 0"
+                     src="{{ asset('local/img/logo_cubim.png') }}" alt="logo" class="logo-default"/>
+            </a>
+
+            <div class="menu-toggler sidebar-toggler">
+            </div>
+        </div>
+        <!-- END LOGO -->
+        {% block menu %}
+        {% endblock %}
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:" class="menu-toggler responsive-toggler" data-toggle="collapse"
+           data-target=".navbar-collapse">
+        </a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="top-menu">
+            <ul class="nav navbar-nav pull-right">
+                <!-- BEGIN NOTIFICATION DROPDOWN -->
+                {% if notificaciones['recepcion'] is defined and  notificaciones['recepcion']|length > 0 %}
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                            <i class="fa fa-inbox"></i>
+                        <span class="badge badge-default">
+                        {{ notificaciones['recepcion']|length }} </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <p>
+                                    Recepci&oacute;n
+                                </p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="max-height:250px; height: 100%;">
+                                    {% if notificaciones['recepcion'] is defined %}
+                                        {% for notificacion in notificaciones['recepcion'] %}
+                                            <li>
+                                                <a href="{{ path('usuario_detalles', {'modulo':'recepcion', 'id': notificacion['id'], 'page':1}) }}">
+                                                <span class="label label-sm label-icon label-warning">
+                                                <i class="fa fa-sign-out"></i>
+                                                </span>
+                                                    Al usuario <span class="time">{{ notificacion['nombres'] }}</span>
+                                                    a&uacute;n no se le ha dado salida de la biblioteca.
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if notificaciones['navegacion'] is defined and  notificaciones['navegacion']|length > 0 %}
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                            <i class="fa fa-desktop"></i>
+                        <span class="badge badge-default">
+                        {{ notificaciones['navegacion']|length }} </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <p>
+                                    Sala de Navegaci&oacute;n
+                                </p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="max-height:250px; height: 100%;">
+                                    {% if notificaciones['navegacion'] is defined %}
+                                        {% for notificacion in notificaciones['navegacion'] %}
+                                            <li>
+                                                <a href="{{ path('usuario_detalles', {'modulo':'navegacion', 'id': notificacion['id'], 'page':1}) }}">
+                                                <span class="label label-sm label-icon label-warning">
+                                                <i class="fa fa-sign-out"></i>
+                                                </span>
+                                                    Al usuario <span class="time">{{ notificacion['nombres'] }}</span>
+                                                    a&uacute;n no se le ha dado salida de la Sala de Navegaci&oacute;n.
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if  notificaciones['referencia'] is defined and notificaciones['referencia']|length > 0 %}
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                            <i class="fa fa-bookmark"></i>
+                        <span class="badge badge-default">
+                        ! </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <p>
+                                    Referencia
+                                </p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="max-height:250px; height: 100%;">
+                                    {% if notificaciones['referencia']['referencia'] is defined
+                                    and notificaciones['referencia']['referencia'] > 0 %}
+                                        <li>
+                                            <a href="{{ path('referencia_listado_preguntas', {'noti':true}) }}">
+                                                <span class="label label-sm label-icon label-warning">
+                                                <i class="fa fa-question-circle"></i>
+                                                </span>
+                                                {% if notificaciones['referencia']['referencia'] > 1 %}
+                                                    Existen <span
+                                                        class="time">{{ notificaciones['referencia']['referencia'] }}</span> preguntas
+                                                    de referencia sin responder.
+                                                {% elseif notificaciones['referencia']['referencia'] > 0 %}
+                                                    Existe <span
+                                                        class="time">{{ notificaciones['referencia']['referencia'] }}</span> pregunta
+                                                    de referencia sin responder.
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if notificaciones['referencia']['bibliografia'] is defined
+                                    and notificaciones['referencia']['bibliografia'] > 0 %}
+                                        <li>
+                                            <a href="{{ path('referencia_listado_solicitudes', {'noti':true}) }}">
+                                                <span class="label label-sm label-icon label-warning">
+                                                <i class="fa fa-question-circle"></i>
+                                                </span>
+                                                {% if notificaciones['referencia']['bibliografia'] > 1 %}
+                                                    Existen <span
+                                                        class="time">{{ notificaciones['referencia']['bibliografia'] }}</span>
+                                                    solicitudes de bibliograf&iacute;a sin responder.
+                                                {% elseif notificaciones['referencia']['bibliografia'] > 0 %}
+                                                    Existe <span
+                                                        class="time">{{ notificaciones['referencia']['bibliografia'] }}</span>
+                                                    solicitud de bibliograf&iacute;a  sin responder.
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if  notificaciones['dsi'] is defined and notificaciones['dsi']|length > 0 %}
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                            <i class="fa fa-dot-circle-o"></i>
+                        <span class="badge badge-default">
+                        ! </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <p>
+                                    DSI
+                                </p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="max-height:250px; height: 100%;">
+                                    {% if notificaciones['dsi']['referencia'] is defined
+                                    and notificaciones['dsi']['referencia'] > 0 %}
+                                        <li>
+                                            <a href="{{ path('dsi_listado_preguntas', {'noti':true}) }}">
+                                                <span class="label label-sm label-icon label-warning">
+                                                <i class="fa fa-question-circle"></i>
+                                                </span>
+                                                {% if notificaciones['dsi']['referencia'] > 1 %}
+                                                    Existen <span
+                                                        class="time">{{ notificaciones['dsi']['referencia'] }}</span> preguntas
+                                                    de DSI sin responder.
+                                                {% elseif notificaciones['dsi']['referencia'] > 0 %}
+                                                    Existe <span
+                                                        class="time">{{ notificaciones['dsi']['referencia'] }}</span> pregunta
+                                                    de DSI sin responder.
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if notificaciones['dsi']['bibliografia'] is defined
+                                    and notificaciones['dsi']['bibliografia'] > 0 %}
+                                        <li>
+                                            <a href="{{ path('dsi_listado_solicitudes', {'noti':true}) }}">
+                                                <span class="label label-sm label-icon label-warning">
+                                                <i class="fa fa-question-circle"></i>
+                                                </span>
+                                                {% if notificaciones['dsi']['bibliografia'] > 1 %}
+                                                    Existen <span
+                                                        class="time">{{ notificaciones['dsi']['bibliografia'] }}</span>
+                                                    solicitudes de bibliograf&iacute;a sin responder.
+                                                {% elseif notificaciones['dsi']['bibliografia'] > 0 %}
+                                                    Existe <span
+                                                        class="time">{{ notificaciones['dsi']['bibliografia'] }}</span>
+                                                    solicitud de bibliograf&iacute;a  sin responder.
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if  notificaciones['bibliografia'] is defined and notificaciones['bibliografia']|length > 0 and notificaciones['bibliografia'][0][1] > 0 %}
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                            <i class="fa fa-bookmark-o"></i>
+                        <span class="badge badge-default">
+                        ! </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <p>
+                                    Bibliograf&iacute;a
+                                </p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="max-height:250px; height: 100%;">
+                                    {% if notificaciones['bibliografia'] is defined %}
+                                        {% for notificacion in notificaciones['bibliografia'] %}
+                                            <li>
+                                                <a href="{{ path('bibliografia_listado_solicitudes', {'noti':true}) }}">
+                                                <span class="label label-sm label-icon label-warning">
+                                                <i class="fa fa-question-circle"></i>
+                                                </span>
+                                                    {% if notificacion[1] > 1 %}
+                                                        Existen <span
+                                                            class="time">{{ notificacion[1] }}</span> solicitudes
+                                                                                                      de bibliograf&iacute;a sin responder.
+                                                    {% else %}
+                                                        Existe <span class="time">{{ notificacion[1] }}</span> solicitud
+                                                                                                               de bibliograf&iacute;a sin responder.
+                                                    {% endif %}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                <!-- END NOTIFICATION DROPDOWN -->
+                <!-- BEGIN USER LOGIN DROPDOWN -->
+                {% if app.user.nombre is defined %}
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover=""
+                           data-close-others="true">
+                            {% if app.session.get('avatar')[0] is defined %}{# if app.session.has('avatar') #}
+                                <!-- User picture-->
+                                <img src="{{ asset('local/img/users/'~app.session.get('avatar')[0].path) }}"{# asset('local/img/users/'~app.session.get('avatar').path) #}
+                                     alt="Avatar"
+                                     width="32" height="60"
+                                     class="img-circle">
+                            {% endif %}
+                            <span class="username username-hide-on-mobile">
+					{{ app.user.nombre }} </span>
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ path('appuser_details', {'id':app.user.id}) }}">
+                                    <i class="fa fa-user"></i> Perfil </a>
+                            </li>
+                            <li class="divider">
+                            </li>
+                            <li>
+                                <a href="{{ path('appuser_logout') }}">
+                                    <i class="fa fa-key"></i> Desconectar </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                <!-- END USER LOGIN DROPDOWN -->
+                {% if is_granted('ROLE_ADMINISTRACIÓN') %}
+                    <!-- BEGIN QUICK SIDEBAR TOGGLER -->
+                    <li class="dropdown dropdown-quick-sidebar-toggler">
+                        <a href="javascript:" class="dropdown-toggle">
+                            <i class="fa fa-gear"></i>
+                        </a>
+                    </li>
+                    <!-- END QUICK SIDEBAR TOGGLER -->
+                {% endif %}
+            </ul>
+        </div>
+        <!-- END TOP NAVIGATION MENU -->
+    </div>
+    <!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
+<div class="clearfix">
+</div>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <div class="page-sidebar-wrapper">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar navbar-collapse collapse">
+            <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+            <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+            <!-- BEGIN SIDEBAR MENU1 -->
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 611px;">
+                <ul data-slide-speed="200" data-auto-scroll="true"
+                    class="page-sidebar-menu hidden-sm hidden-xs page-sidebar-menu-light" data-height="611"
+                    style="overflow: hidden; width: auto; height: 611px;" data-initialized="1">
+                    <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+                    <!-- DOC: This is mobile version of the horizontal menu. The desktop version is defined(duplicated) in the header above -->
+                    {% block search_form_not_in_use %}
+                    {% endblock %}
+                    {% if app.user %}
+                        <li class="start {% if active is defined and active['sup'] == 'Panel Resumen' %} active {% endif %}">
+                            <a href="{{ path('otros_homepage') }}">
+                                <i class="fa fa-home"></i>
+				<span class="title">
+				Panel Resumen </span>
+                                {% if active is defined and active['sup'] == 'Panel Resumen' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_REGISTRO') %}
+                        <li class="start {% if active is defined and active['sup'] == 'usuario' %} active {% endif %}">
+                            <a href="{{ path('usuario_lista', {'modulo':'usuario'}) }}">
+                                <i class="fa fa-users"></i>
+				<span class="title">
+				Registro </span>
+                                {% if active is defined and active['sup'] == 'usuario' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_RECEPCION') %}
+                        <li class="start {% if active is defined and active['sup'] == 'recepcion' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-inbox"></i>
+                                <span class="title">Recepci&oacute;n</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'recepcion' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'recepcion' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'recepcion' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'recepcion'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'recepcion' and active['sub'] == 'entradas' %} active {% endif %}">
+                                    <a href="{{ path('recepcion_listado_entradas') }}">
+                                        <i class="fa fa-refresh"></i>
+                                        Entradas/Salidas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_REFERENCIA') %}
+                        <li class="start {% if active is defined and active['sup'] == 'referencia' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-bookmark"></i>
+                                <span class="title">Referencia</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'referencia' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'referencia' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'referencia' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'referencia'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'referencia' and active['sub'] == 'preguntas' %} active {% endif %}">
+                                    <a href="{{ path('referencia_listado_preguntas') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Preguntas/Respuestas</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'referencia' and active['sub'] == 'solicitudes' %} active {% endif %}">
+                                    <a href="{{ path('referencia_listado_solicitudes') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Solicitudes/Respuestas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_DSI') %}
+                        <li class="start {% if active is defined and active['sup'] == 'dsi' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-dot-circle-o"></i>
+                                <span class="title">DSI</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'dsi' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'dsi' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'dsi' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'dsi'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'dsi' and active['sub'] == 'preguntas' %} active {% endif %}">
+                                    <a href="{{ path('dsi_listado_preguntas') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Preguntas/Respuestas</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'dsi' and active['sub'] == 'solicitudes' %} active {% endif %}">
+                                    <a href="{{ path('dsi_listado_solicitudes') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Solicitudes/Respuestas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_BIBLIOGRAFIA') %}
+                        <li class="start {% if active is defined and active['sup'] == 'bibliografia' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-bookmark-o"></i>
+                                <span class="title">Bibliograf&iacute;a</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'bibliografia' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'bibliografia' %}
+                                    <span class="selected ">
+				                    </span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'bibliografia' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'bibliografia'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'bibliografia' and active['sub'] == 'preguntas' %} active {% endif %}">
+                                    <a href="{{ path('bibliografia_listado_solicitudes') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Solicitudes/Respuestas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_NAVEGACION') %}
+                        <li class="start {% if active is defined and active['sup'] == 'navegacion' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-desktop"></i>
+                                <span class="title">Sala de Navegaci&oacute;n</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'navegacion' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'navegacion' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'navegacion' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'navegacion'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'navegacion' and active['sub'] == 'entradas' %} active {% endif %}">
+                                    <a href="{{ path('navegacion_listado_entradas') }}">
+                                        <i class="fa fa-refresh"></i>
+                                        Entradas/Salidas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_LECTURA') %}
+                        <li class="start {% if active is defined and active['sup'] == 'lectura' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-book"></i>
+                                <span class="title">Sala de Lectura</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'lectura' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'lectura' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'lectura' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'lectura'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'lectura' and active['sub'] == 'entradas' %} active {% endif %}">
+                                    <a href="{{ path('lectura_listado_entradas') }}">
+                                        <i class="fa fa-refresh"></i>
+                                        Entradas/Salidas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <!-- END SubMenu item-->
+                </ul>
+                <div class="slimScrollBar"
+                     style="background: none repeat scroll 0 0 rgb(187, 187, 187); width: 7px; position: absolute; top: 0; border-radius: 7px; z-index: 99; right: 1px; height: 415.725px; display: none; opacity: 0.4;"></div>
+                <div class="slimScrollRail"
+                     style="width: 7px; height: 100%; position: absolute; top: 0; display: none; border-radius: 7px; background: none repeat scroll 0 0 rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div>
+            </div>
+            <!-- END SIDEBAR MENU1 -->
+            <!-- BEGIN RESPONSIVE MENU FOR HORIZONTAL & SIDEBAR MENU -->
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 611px;">
+                <ul data-auto-scroll="true" data-slide-speed="200"
+                    class="page-sidebar-menu visible-sm visible-xs page-sidebar-menu-light" data-height="611"
+                    style="overflow: hidden; width: auto; height: 611px;" data-initialized="1">
+                    <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+                    <!-- DOC: This is mobile version of the horizontal menu. The desktop version is defined(duplicated) in the header above -->
+                    {% if app.user %}
+                        <li class="start {% if active is defined and active['sup'] == 'Panel Resumen' %} active {% endif %}">
+                            <a href="{{ path('otros_homepage') }}">
+                                <i class="fa fa-home"></i>
+				<span class="title">
+				Panel Resumen </span>
+                                {% if active is defined and active['sup'] == 'Panel Resumen' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_REGISTRO') %}
+                        <li class="start {% if active is defined and active['sup'] == 'usuario' %} active {% endif %}">
+                            <a href="{{ path('usuario_lista', {'modulo':'usuario'}) }}">
+                                <i class="fa fa-users"></i>
+				<span class="title">
+				Registro </span>
+                                {% if active is defined and active['sup'] == 'usuario' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_RECEPCION') %}
+                        <li class="start {% if active is defined and active['sup'] == 'recepcion' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-inbox"></i>
+                                <span class="title">Recepci&oacute;n</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'recepcion' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'recepcion' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'recepcion' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'recepcion'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'recepcion' and active['sub'] == 'entradas' %} active {% endif %}">
+                                    <a href="{{ path('recepcion_listado_entradas') }}">
+                                        <i class="fa fa-refresh"></i>
+                                        Entradas/Salidas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_REFERENCIA') %}
+                        <li class="start {% if active is defined and active['sup'] == 'referencia' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-bookmark"></i>
+                                <span class="title">Referencia</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'referencia' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'referencia' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'referencia' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'referencia'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'referencia' and active['sub'] == 'preguntas' %} active {% endif %}">
+                                    <a href="{{ path('referencia_listado_preguntas') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Preguntas/Respuestas</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'referencia' and active['sub'] == 'solicitudes' %} active {% endif %}">
+                                    <a href="{{ path('referencia_listado_solicitudes') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Solicitudes/Respuestas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_DSI') %}
+                        <li class="start {% if active is defined and active['sup'] == 'dsi' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-dot-circle-o"></i>
+                                <span class="title">DSI</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'dsi' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'dsi' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'dsi' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'dsi'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'dsi' and active['sub'] == 'preguntas' %} active {% endif %}">
+                                    <a href="{{ path('dsi_listado_preguntas') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Preguntas/Respuestas</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'dsi' and active['sub'] == 'solicitudes' %} active {% endif %}">
+                                    <a href="{{ path('dsi_listado_solicitudes') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Solicitudes/Respuestas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_BIBLIOGRAFIA') %}
+                        <li class="start {% if active is defined and active['sup'] == 'bibliografia' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-bookmark-o"></i>
+                                <span class="title">Bibliograf&iacute;a</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'bibliografia' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'bibliografia' %}
+                                    <span class="selected ">
+				                    </span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'bibliografia' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'bibliografia'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'bibliografia' and active['sub'] == 'preguntas' %} active {% endif %}">
+                                    <a href="{{ path('bibliografia_listado_solicitudes') }}">
+                                        <i class="fa fa-question-circle"></i>
+                                        Solicitudes/Respuestas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_NAVEGACION') %}
+                        <li class="start {% if active is defined and active['sup'] == 'navegacion' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-desktop"></i>
+                                <span class="title">Sala de Navegaci&oacute;n</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'navegacion' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'navegacion' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'navegacion' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'navegacion'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'navegacion' and active['sub'] == 'entradas' %} active {% endif %}">
+                                    <a href="{{ path('navegacion_listado_entradas') }}">
+                                        <i class="fa fa-refresh"></i>
+                                        Entradas/Salidas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_LECTURA') %}
+                        <li class="start {% if active is defined and active['sup'] == 'lectura' %} active open {% endif %}">
+                            <a href="javascript:">
+                                <i class="fa fa-book"></i>
+                                <span class="title">Sala de Lectura</span>
+                                <span class="arrow {% if active is defined and active['sup'] == 'lectura' %} open {% endif %}"></span>
+                                {% if active is defined and active['sup'] == 'lectura' %}
+                                    <span class="selected ">
+				</span>
+                                {% endif %}
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="start {% if active is defined and active['sup'] == 'lectura' and active['sub'] == 'usuarios' %} active {% endif %}">
+                                    <a href="{{ path('usuario_lista', {'modulo':'lectura'}) }}">
+                                        <i class="fa fa-users"></i>
+                                        Usuarios</a>
+                                </li>
+                                <li class="start {% if active is defined and active['sup'] == 'lectura' and active['sub'] == 'entradas' %} active {% endif %}">
+                                    <a href="{{ path('lectura_listado_entradas') }}">
+                                        <i class="fa fa-refresh"></i>
+                                        Entradas/Salidas</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="slimScrollBar"
+                     style="background: none repeat scroll 0 0 rgb(187, 187, 187); width: 7px; position: absolute; top: 0; opacity: 0.4; border-radius: 7px; z-index: 99; right: 1px; display: block;"></div>
+                <div class="slimScrollRail"
+                     style="width: 7px; height: 100%; position: absolute; top: 0; display: none; border-radius: 7px; background: none repeat scroll 0 0 rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div>
+            </div>
+            <!-- END RESPONSIVE MENU FOR HORIZONTAL & SIDEBAR MENU -->
+        </div>
+        <!-- END SIDEBAR -->
+    </div>
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content" style="min-height:1152px">
+            <!-- BEGIN PAGE HEADER-->
+            {% block page_title %}
+            {% endblock %}
+            {% block page_bar %}
+            {% endblock %}
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            {% block page_content %}
+            {% endblock %}
+            <!-- END PAGE CONTENT-->
+        </div>
+    </div>
+    <!-- END CONTENT -->
+
+    {% if is_granted('ROLE_ADMINISTRACIÓN') %}
+        <!-- BEGIN QUICK SIDEBAR -->
+        <a class="page-quick-sidebar-toggler" href="javascript:"><i class="icon-close"></i></a>
+        <div class="page-quick-sidebar-wrapper">
+            <div class="page-quick-sidebar">
+                <div class="nav-justified">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="active">
+                            <a data-toggle="tab" href="#quick_sidebar_tab_1">
+                                Administraci&oacute;n
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#quick_sidebar_tab_2">
+                                Nomencladores
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="quick_sidebar_tab_1" class="tab-pane active page-quick-sidebar-chat">
+                            <div class="page-quick-sidebar-list"
+                                 style="position: relative; overflow: hidden; width: auto; height: 565px;">
+                                <div data-wrapper-class="page-quick-sidebar-list" data-rail-color="#ddd"
+                                     class="page-quick-sidebar-chat-users"
+                                     data-height="565" style="overflow: hidden; width: auto; height: 565px;"
+                                     data-initialized="1">
+                                    <ul class="media-list list-items">
+                                        <li class="media">
+                                            <a href="{{ path('appuser_list') }}">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-2" style="margin-top: 10px">
+                                                        <span class="fa fa-user fa-2x"></span>
+                                                    </div>
+                                                    <div class="media-body col-md-10">
+                                                        <h4 class="media-heading">
+                                                            Autorizaci&oacute;n</h4>
+
+                                                        <div class="media-heading-sub">
+                                                            Gesti&oacute;n de usuarios
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="media">
+                                            <a href="{{ path('otros_calendario') }}">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-2" style="margin-top: 10px">
+                                                        <span class="fa fa-calendar fa-2x"></span>
+                                                    </div>
+                                                    <div class="media-body col-md-10">
+                                                        <h4 class="media-heading">Calendario</h4>
+
+                                                        <div class="media-heading-sub">
+                                                            Programaci&oacute;n de eventos
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="media">
+                                            <a href="{{ path('otros_trazas') }}">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-2" style="margin-top: 10px">
+                                                        <span class="fa fa-list-alt fa-2x"></span>
+                                                    </div>
+                                                    <div class="media-body col-md-10">
+                                                        <h4 class="media-heading">
+                                                            Trazas</h4>
+
+                                                        <div class="media-heading-sub">
+                                                            Registro de operaciones
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: none repeat scroll 0 0 rgb(187, 187, 187); width: 7px; position: absolute; top: 0; opacity: 0.4; border-radius: 7px; z-index: 99; right: 1px; height: 421.141px; display: block;"></div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: none repeat scroll 0% 0% rgb(221, 221, 221); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                            </div>
+                        </div>
+                        <div id="quick_sidebar_tab_2" class="tab-pane page-quick-sidebar-chat">
+                            <div class="slimScrollDiv"
+                                 style="position: relative; overflow: hidden; width: auto; height: 565px;">
+                                <div class="page-quick-sidebar-alerts-list" data-height="565"
+                                     style="overflow: hidden; width: auto; height: 565px;"
+                                     data-initialized="1">
+                                    <div data-wrapper-class="page-quick-sidebar-list" data-rail-color="#ddd"
+                                         class="page-quick-sidebar-chat-users"
+                                         data-height="565" style="overflow: hidden; width: auto; min-height: 565px;"
+                                         data-initialized="1">
+                                        <ul class="media-list list-items">
+                                            {% for nomenclador in nomencladores %}
+                                                <li class="media">
+                                                    <a href="{{ path('nomenclador_lista', {'idTipoNom':nomenclador.id}) }}">
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-2" style="margin-top: 10px">
+                                                                <span class="fa fa-gears"></span>
+                                                            </div>
+                                                            <div class="media-body col-md-10">
+                                                                <h4 class="media-heading">{{ nomenclador.descripcion }}</h4>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: none repeat scroll 0 0 rgb(187, 187, 187); width: 7px; position: absolute; top: 0; opacity: 0.4; border-radius: 7px; z-index: 99; right: 1px; display: block;"></div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0; display: none; border-radius: 7px; background: none repeat scroll 0 0 rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                            </div>
+                        </div>
+                        <div id="quick_sidebar_tab_3" class="tab-pane page-quick-sidebar-settings">
+                            <div class="slimScrollDiv"
+                                 style="position: relative; overflow: hidden; width: auto; height: 565px;">
+                                <div class="page-quick-sidebar-settings-list" data-height="565"
+                                     style="overflow: hidden; width: auto; height: 565px;" data-initialized="1">
+                                    <h3 class="list-heading">General Settings</h3>
+                                    <ul class="list-items borderless">
+                                        <li>
+                                            Enable Notifications
+                                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-on bootstrap-switch-small bootstrap-switch-animate">
+                                                <div class="bootstrap-switch-container"><span
+                                                            class="bootstrap-switch-handle-on bootstrap-switch-success">ON</span><label
+                                                            class="bootstrap-switch-label">&nbsp;</label><span
+                                                            class="bootstrap-switch-handle-off bootstrap-switch-default">OFF</span><input
+                                                            type="checkbox" data-off-text="OFF" data-off-color="default"
+                                                            data-on-text="ON"
+                                                            data-on-color="success" data-size="small" checked=""
+                                                            class="make-switch"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            Allow Tracking
+                                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-off bootstrap-switch-small bootstrap-switch-animate">
+                                                <div class="bootstrap-switch-container"><span
+                                                            class="bootstrap-switch-handle-on bootstrap-switch-info">ON</span><label
+                                                            class="bootstrap-switch-label">&nbsp;</label><span
+                                                            class="bootstrap-switch-handle-off bootstrap-switch-default">OFF</span><input
+                                                            type="checkbox" data-off-text="OFF" data-off-color="default"
+                                                            data-on-text="ON"
+                                                            data-on-color="info" data-size="small" class="make-switch">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            Log Errors
+                                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-on bootstrap-switch-small bootstrap-switch-animate">
+                                                <div class="bootstrap-switch-container"><span
+                                                            class="bootstrap-switch-handle-on bootstrap-switch-danger">ON</span><label
+                                                            class="bootstrap-switch-label">&nbsp;</label><span
+                                                            class="bootstrap-switch-handle-off bootstrap-switch-default">OFF</span><input
+                                                            type="checkbox" data-off-text="OFF" data-off-color="default"
+                                                            data-on-text="ON"
+                                                            data-on-color="danger" data-size="small" checked=""
+                                                            class="make-switch"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            Auto Sumbit Issues
+                                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-off bootstrap-switch-small bootstrap-switch-animate">
+                                                <div class="bootstrap-switch-container"><span
+                                                            class="bootstrap-switch-handle-on bootstrap-switch-warning">ON</span><label
+                                                            class="bootstrap-switch-label">&nbsp;</label><span
+                                                            class="bootstrap-switch-handle-off bootstrap-switch-default">OFF</span><input
+                                                            type="checkbox" data-off-text="OFF" data-off-color="default"
+                                                            data-on-text="ON"
+                                                            data-on-color="warning" data-size="small"
+                                                            class="make-switch"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            Enable SMS Alerts
+                                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-on bootstrap-switch-small bootstrap-switch-animate">
+                                                <div class="bootstrap-switch-container"><span
+                                                            class="bootstrap-switch-handle-on bootstrap-switch-success">ON</span><label
+                                                            class="bootstrap-switch-label">&nbsp;</label><span
+                                                            class="bootstrap-switch-handle-off bootstrap-switch-default">OFF</span><input
+                                                            type="checkbox" data-off-text="OFF" data-off-color="default"
+                                                            data-on-text="ON"
+                                                            data-on-color="success" data-size="small" checked=""
+                                                            class="make-switch"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h3 class="list-heading">System Settings</h3>
+                                    <ul class="list-items borderless">
+                                        <li>
+                                            Security Level
+                                            <select class="form-control input-inline input-sm input-small">
+                                                <option value="1">Normal</option>
+                                                <option selected="" value="2">Medium</option>
+                                                <option value="e">High</option>
+                                            </select>
+                                        </li>
+                                        <li>
+                                            Failed Email Attempts <input value="5"
+                                                                         class="form-control input-inline input-sm input-small">
+                                        </li>
+                                        <li>
+                                            Secondary SMTP Port <input value="3560"
+                                                                       class="form-control input-inline input-sm input-small">
+                                        </li>
+                                        <li>
+                                            Notify On System Error
+                                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-on bootstrap-switch-small bootstrap-switch-animate">
+                                                <div class="bootstrap-switch-container"><span
+                                                            class="bootstrap-switch-handle-on bootstrap-switch-danger">ON</span><label
+                                                            class="bootstrap-switch-label">&nbsp;</label><span
+                                                            class="bootstrap-switch-handle-off bootstrap-switch-default">OFF</span><input
+                                                            type="checkbox" data-off-text="OFF" data-off-color="default"
+                                                            data-on-text="ON"
+                                                            data-on-color="danger" data-size="small" checked=""
+                                                            class="make-switch"></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            Notify On SMTP Error
+                                            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-on bootstrap-switch-small bootstrap-switch-animate">
+                                                <div class="bootstrap-switch-container"><span
+                                                            class="bootstrap-switch-handle-on bootstrap-switch-warning">ON</span><label
+                                                            class="bootstrap-switch-label">&nbsp;</label><span
+                                                            class="bootstrap-switch-handle-off bootstrap-switch-default">OFF</span><input
+                                                            type="checkbox" data-off-text="OFF" data-off-color="default"
+                                                            data-on-text="ON"
+                                                            data-on-color="warning" data-size="small" checked=""
+                                                            class="make-switch"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="inner-content">
+                                        <button class="btn btn-success"><i class="icon-settings"></i> Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: none repeat scroll 0% 0% rgb(187, 187, 187); width: 7px; position: absolute; top: 0px; opacity: 0.4; border-radius: 7px; z-index: 99; right: 1px; display: block;"></div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: none repeat scroll 0% 0% rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END QUICK SIDEBAR -->
+    {% endif %}
+</div>
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+    <div class="page-footer-inner">
+        2014 &copy; Codechanic. Metronic HTML Template powered by keenthemes.
+    </div>
+    <div class="page-footer-tools">
+		<span class="go-top">
+		<i class="fa fa-angle-up"></i>
+		</span>
+    </div>
+</div>
+<!-- END FOOTER -->
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<!-- BEGIN CORE PLUGINS -->
+<!--[if lt IE 9]>
+<script src="{{ asset('metronic/assets/global/plugins/respond.min.js')}}"></script>
+<script src="{{asset('metronic/assets/global/plugins/excanvas.min.js')}}"></script>
+<![endif]-->
+<script src="{{ asset('metronic/assets/global/plugins/jquery-1.11.0.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('metronic/assets/global/plugins/jquery-migrate-1.2.1.min.js') }}" type="text/javascript"></script>
+<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to f')}}ix bootstrap tooltip conflict with jquery ui tooltip -->
+<script src="{{ asset('metronic/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"
+        type="text/javascript"></script>
+<script src="{{ asset('metronic/assets/global/plugins/bootstrap/js/bootstrap.min.js') }}"
+        type="text/javascript"></script>
+<script src="{{ asset('metronic/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js') }}"
+        type="text/javascript"></script>
+<script src="{{ asset('metronic/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('metronic/assets/global/plugins/jquery.blockui.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('metronic/assets/global/plugins/jquery.cokie.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('metronic/assets/global/plugins/uniform/jquery.uniform.min.js') }}"
+        type="text/javascript"></script>
+<script src="{{ asset('metronic/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"
+        type="text/javascript"></script>
+<script src="{{ asset('app/js/global.js') }}"></script>
+<!-- END CORE PLUGINS -->
+{% block scripts %}
+{% endblock %}
+</body>
+
+<!-- END BODY -->
+</html>

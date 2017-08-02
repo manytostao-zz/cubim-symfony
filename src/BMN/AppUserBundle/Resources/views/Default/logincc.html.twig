@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="ie ie6 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="ie ie7 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8 lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>
+<html class="ie ie9" lang="en"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-ie">
+<!--<![endif]-->
+
+<head>
+    <!-- Meta-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <title>CUBiM</title>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{{ asset('app/css/bootstrap.css') }}">
+    <!-- Vendor CSS-->
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/animo/animate+animo.css') }}">
+    <!-- App CSS-->
+    <link rel="stylesheet" href="{{ asset('app/css/app.css') }}">
+    <!-- START Page Custom CSS-->
+    <link rel="stylesheet" href="{{ asset('local/bmn.css') }}">
+    <!-- Modernizr JS Script-->
+    <script src="{{ asset('vendor/modernizr/modernizr.js') }}" type="application/javascript"></script>
+    <!-- FastClick for mobiles-->
+    <script src="{{ asset('vendor/fastclick/fastclick.js') }}" type="application/javascript"></script>
+</head>
+
+<body>
+<!-- START wrapper-->
+<div style="height: 100%; padding: 50px 0; background-color: #2c3037" class="row row-table">
+    <div class="col-lg-3 col-md-6 col-sm-8 col-xs-12 align-middle">
+        <!-- START panel-->
+        <div data-toggle="play-animation" data-play="zoomIn" data-offset="0" data-duration="300"
+             class="panel panel-default panel-flat">
+            <p class="text-center mb-lg">
+                <a href="#">
+                    <img style="width: 100%; height: 70px;" src="{{ asset('local/img/logo_cubim.png') }}" alt="Image" class="block-center">
+                </a>
+            </p>
+
+            <p class="text-center mb-lg">
+                <strong>Introduzca sus datos</strong>
+            </p>
+
+            <div class="panel-body">
+                <form action="{{ path('appuser_login_check') }}" method="post" role="form" class="mb-lg">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.message }}<br/><br/></div>
+                    {% endif %}
+                    {% if not navegador %}
+                        <div class="alert alert-danger">Por favor, use Mozilla Firefox<br/><br/></div>
+                    {% endif %}
+                    <div class="form-group has-feedback">
+                        <input id="username" name="_username" type="text" placeholder="Usuario" class="form-control"
+                               value="{{ last_username }}">
+                        <span class="fa fa-user form-control-feedback text-muted"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input id="password" name="_password" type="password" placeholder="Contraseña" class="form-control">
+                        <span class="fa fa-lock form-control-feedback text-muted"></span>
+                    </div>
+                    <div class="clearfix">
+                        <div class="checkbox c-checkbox pull-left mt0">
+                            <label>
+                                <input id="no_cerrar" name="_remember_me" type="checkbox" value="" checked>
+                                <span class="fa fa-check"></span>No cerrar sesión</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-primary">Acceder</button>
+                </form>
+            </div>
+        </div>
+        <!-- END panel-->
+    </div>
+</div>
+<!-- END wrapper-->
+<!-- START Scripts-->
+<!-- Main vendor Scripts-->
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<!-- Animo-->
+<script src="{{ asset('vendor/animo/animo.min.js') }}"></script>
+<!-- Custom script for pages-->
+<script src="{{ asset('metronic/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('app/js/app.js') }}"></script>
+<!-- END Scripts-->
+</body>
+
+</html>

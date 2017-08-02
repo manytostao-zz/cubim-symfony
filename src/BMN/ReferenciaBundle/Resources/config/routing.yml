@@ -1,0 +1,43 @@
+referencia_nueva_solicitud:
+    pattern:  /nueva_solicitud/
+    defaults: { _controller: ReferenciaBundle:Default:nuevaSolicitud}
+    options:
+        expose: true
+
+referencia_modificar_solicitud:
+    pattern:  /nueva_solicitud/{id}
+    defaults: { _controller: ReferenciaBundle:Default:modificarSolicitud}
+    options:
+        expose: true
+
+referencia_listado_preguntas:
+    pattern:  /listado_preguntas/
+    defaults: { _controller: ReferenciaBundle:Default:listadoPreguntas }
+
+referencia_eliminar_solicitud:
+    pattern:  /eliminar_solicitud/{id}
+    defaults: { _controller: ReferenciaBundle:Default:eliminarSolicitud }
+    options:
+        expose: true
+
+borrar_adjunto:
+    pattern:  /borrar_adjunto/{id}
+    defaults: { _controller: ReferenciaBundle:Default:borrarAdjunto }
+
+referencia_limpiar_filtros:
+    pattern:  /limpiar_filtros/
+    defaults: { _controller: ReferenciaBundle:Default:limpiarFiltros }
+
+referencia_ajax_listado:
+    path: /getPreguntas/
+    defaults: {_controller: ReferenciaBundle:Default:getPreguntas}
+    options:
+        expose: true
+
+referencia_listado_solicitudes:
+    pattern:  /solicitudes/
+    defaults: { _controller: ReferenciaBundle:Default:listadoSolicitudes}
+
+referencia_limpiar_filtros_solicitudes:
+    pattern:  /limpiar_filtros_solicitudes/
+    defaults: { _controller: ReferenciaBundle:Default:limpiarSolicitudesFiltros}

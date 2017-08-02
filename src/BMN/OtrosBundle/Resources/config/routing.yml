@@ -1,0 +1,57 @@
+otros_homepage:
+    pattern:  /panel
+    defaults: { _controller: OtrosBundle:Default:index }
+
+otros_data:
+    pattern:  /data/
+    defaults: { _controller: OtrosBundle:Default:data }
+    options:
+        expose: true
+
+otros_redirectToUser:
+    pattern:  /redirect/
+    defaults: { _controller: OtrosBundle:Default:redirectToUser }
+
+otros_interactive_chart:
+    pattern:  /chart/
+    defaults: { _controller: OtrosBundle:Default:interactiveChart }
+    options:
+        expose: true
+
+otros_trazas:
+    pattern:  /trazas/
+    defaults: { _controller: OtrosBundle:Default:trazas }
+
+otros_calendario:
+    pattern:  /calendario/
+    defaults: { _controller: OtrosBundle:Default:calendario }
+
+otros_calendario_export:
+    pattern:  /calendario_export/
+    defaults: { _controller: OtrosBundle:Default:calendarioExport }
+
+otros_crear_evento:
+    pattern:  /calendario/evento/crear/
+    defaults: { _controller: OtrosBundle:Default:calCreateEvent }
+    options:
+        expose: true
+
+otros_eliminar_evento:
+    pattern:  /calendario/evento/eliminar/{id}
+    defaults: { _controller: OtrosBundle:Default:calDeleteEvent }
+
+otros_eventos:
+    pattern:  /calendario/eventos/
+    defaults: { _controller: OtrosBundle:Default:eventos }
+    options:
+        expose: true
+
+limpiar_filtros_trazas:
+    pattern:  /trazas/limpiarFiltros/{basico}/
+    defaults: { _controller: OtrosBundle:Default:limpiarFiltrosTrazas }
+
+trazas_ajax_listado:
+    pattern:  /trazas/list/
+    defaults: { _controller: OtrosBundle:Default:getTrazasList }
+    options:
+        expose: true

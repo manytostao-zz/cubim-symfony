@@ -1,0 +1,17 @@
+.page-content-wrapper .page-content {
+    margin-left: 0px !important;
+}
+
+.form-wizard .steps > li.active > a.step .number {
+    background-color: #ecbc29;
+    color: #fff;
+}
+
+.form-wizard .steps > li.done > a.step .number {
+    background-color: #727f36;
+    color: #fff;
+}
+
+.progress > .progress-bar-success {
+    background-color: #727f36;
+}

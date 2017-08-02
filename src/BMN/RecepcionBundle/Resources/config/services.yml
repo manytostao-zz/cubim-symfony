@@ -1,0 +1,7 @@
+parameters:
+#    recepcion.example.class: BMN\RecepcionBundle\Example
+
+services:
+#    recepcion.example:
+#        class: %recepcion.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

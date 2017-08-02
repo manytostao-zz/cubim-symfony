@@ -1,0 +1,7 @@
+parameters:
+#    navegacion.example.class: BMN\NavegacionBundle\Example
+
+services:
+#    navegacion.example:
+#        class: %navegacion.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

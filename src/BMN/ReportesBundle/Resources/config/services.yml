@@ -1,0 +1,7 @@
+parameters:
+#    reportes.example.class: BMN\ReportesBundle\Example
+
+services:
+#    reportes.example:
+#        class: %reportes.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

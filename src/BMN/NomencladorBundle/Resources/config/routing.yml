@@ -1,0 +1,37 @@
+nomenclador_lista:
+    path: /listado/{idTipoNom}
+    defaults: {_controller: NomencladorBundle:Default:lista}
+
+nomenclador_salvar:
+    path: /salvar/
+    defaults: {_controller: NomencladorBundle:Default:salvar}
+
+nomenclador_eliminar:
+    path: /eliminar/{id}
+    defaults: {_controller: NomencladorBundle:Default:eliminar}
+    options:
+        expose: true
+
+nomenclador_activar:
+    path: /activar/{id}
+    defaults: {_controller: NomencladorBundle:Default:activar}
+    options:
+        expose: true
+
+nomenclador_editar:
+    path: /editar/{idTipoNom}/{id}/{page}
+    defaults: {_controller: NomencladorBundle:Default:editar}
+    options:
+        expose: true
+
+nomenclador_ajax_listado:
+    path: /listado_ajax/{tipoNom}
+    defaults: {_controller: NomencladorBundle:Default:getNomencladorListado}
+    options:
+        expose: true
+
+nomenclador_ajax_select:
+    path: /ajax_list/
+    defaults: {_controller: NomencladorBundle:Default:nomencladorSelect}
+    options:
+        expose: true

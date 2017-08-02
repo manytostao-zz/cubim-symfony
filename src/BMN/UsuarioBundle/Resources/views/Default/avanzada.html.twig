@@ -1,0 +1,26 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Búsqueda Avanzada{% endblock %}
+{% block article %}
+    <div class="art-postmetadataheader">
+        <h3>B&uacute;squeda Avanzada</h3>
+    </div>
+    <br/>
+
+    <fieldset>
+        <legend>Filtros de B&uacute;squeda Avanzados</legend>
+
+        {% embed 'UsuarioBundle:Default:partial_form_view.html.twig' %} {% endembed %}
+        <div class="art-layout-cell layout-item-0" style="text-align: center; vertical-align: middle; width: 70%">
+            <div class="art-postcontent" style="text-align: center; width: 100%; vertical-align: middle">
+                <fieldset>
+                    <div><a
+                                href="{{ path('limpiar_filtros', {'basico':0}) }}">Limpiar Filtros</a></div>
+                    <br/>
+
+                    <div><a
+                                href="{{ path('usuario_lista') }}">Regresar</a></div>
+                </fieldset>
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}

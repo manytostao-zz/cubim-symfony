@@ -1,0 +1,679 @@
+{% extends '::frontend2.html.twig' %}
+{% block title %}
+    <title>CUBiM | Referencia</title>
+{% endblock %}
+{% block page_title %}
+    <h3 class="page-title">
+        Referencia
+    </h3>
+{% endblock %}
+{% block page_style %}
+    <link href="{{ asset('metronic/assets/global/plugins/gritter/css/jquery.gritter.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link type="text/css" href="{{ asset('metronic/assets/global/plugins/select2/select2.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('metronic/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css') }}" rel="stylesheet"
+          type="text/css"/>
+{% endblock %}
+{% block page_bar %}
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-bookmark"></i>
+            </li>
+            <li>
+                <i class="fa fa-angle-right"></i>
+                <a href="{{ path('usuario_lista', {'modulo':'referencia'}) }}">Listado de Usuarios</a>
+            </li>
+            <li>
+                <i class="fa fa-angle-right"></i>
+                <a href="{{ path('usuario_detalles', {'modulo':'referencia', 'id':usuario.id}) }}">Detalles
+                    de
+                    Usuario</a>
+            </li>
+        </ul>
+        {% if not usuario.banned %}
+            <div class="page-toolbar">
+                <div class="btn-group pull-right">
+                    <button data-close-others="true" data-delay="1000" data-hover="" data-toggle="dropdown"
+                            class="btn btn-fit-height btn-primary dropdown-toggle" type="button">
+                        Operaciones <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul role="menu" class="dropdown-menu pull-right">
+                        <li>
+                            <a data-toggle="modal" href="#pregunta"
+                               title="Agregar Pregunta de Referencia">
+                                <i class="fa fa-question-circle"></i>
+                                Agregar Pregunta de Referencia
+                            </a>
+                        </li>
+                        <li>
+                            <a data-toggle="modal" href="#solicitud"
+                               title="Agregar Solicitud de Bibliografía">
+                                <i class="fa fa-question-circle"></i>
+                                Agregar Solicitud de Bibliograf&iacute;a
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block header %}
+    <section class="header-content">
+        <h1 class="pull-left" style="position: relative"> Operaciones
+        </h1>
+
+        <div class="pull-right">
+            {% if is_granted('ROLE_SUPER_ADMINISTRACIÓN') or is_granted('ROLE_ADMINISTRACIÓN') %}
+                <a class="btn btn-default"
+                   onclick="return confirm('¿Está seguro que desea eliminar este usuario?');"
+                   href="{{ path('usuario_eliminar', {'id': usuario.id, 'modulo':'referencia'}) }}"
+                   title="Borrar">
+                    <i class="fa fa-trash-o fa-2x"></i>
+                </a>
+                <a class="btn btn-default"
+                   href="{{ path('usuario_editar', {'id':usuario.id, 'modulo':'referencia'}) }}" title="Editar">
+                    <i class="fa fa-edit fa-2x"></i>
+                </a>
+            {% endif %}
+            <a class="btn btn-default" href="{{ path('usuario_lista', {'modulo':'referencia'}) }}" title="Ir a Listado">
+            <em class="fa fa-list fa-2x"></em>
+            </a>
+            <a class="btn btn-primary" href="{{ path('usuario_adicionar', {'modulo':'referencia'}) }}"
+               title="Adicionar Usuario">
+                <i class="fa fa-plus fa-2x"></i>
+            </a>
+        </div>
+        <div class="clearfix"></div>
+
+    </section>
+{% endblock %}
+
+{% block page_content %}
+    {% for mensaje in app.session.flashbag.get('info_add') %}
+        <div class="alert alert-success alert-dismissible">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-check pull-left"></i>
+            {{ mensaje }}
+        </div>
+    {% endfor %}
+    {% for mensaje in app.session.flashbag.get('info_edit') %}
+        <div class="alert alert-info alert-dismissible">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-pencil-square-o pull-left"></i>{{ mensaje }}</div>
+    {% endfor %}
+    {% if (form_errors(form)) %}
+        <div class="alert alert-danger">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-warning pull-left"></i>{{ form_errors(form) }}
+        </div>
+    {% endif %}
+    {% if (form_errors(form.file)) %}
+        <div class="alert alert-danger">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-warning pull-left"></i>{{ form_errors(form.file) }}
+        </div>
+    {% endif %}
+    {% if (form_errors(form.name)) %}
+        <div class="alert alert-danger">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-warning pull-left"></i>{{ form_errors(form.name) }}
+        </div>
+    {% endif %}
+    {% if usuario.tipoUsua is not null %}
+        <div class="note note-success">
+            <h4 style="margin: 0">
+                Usuario {{ usuario.tipoUsua }} #<strong>{{ usuario.carnetBib }}</strong>
+            </h4>
+        </div>
+    {% endif %}
+    {% if (form_errors(formBib)) %}
+        <div class="alert alert-danger">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-warning pull-left"></i>{{ form_errors(formBib) }}
+        </div>
+    {% endif %}
+    {% if (form_errors(formBib.tema)) %}
+        <div class="alert alert-danger">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-warning pull-left"></i>{{ form_errors(formBib.tema) }}
+        </div>
+    {% endif %}
+    {% if (form_errors(formBib.fechaDesde)) %}
+        <div class="alert alert-danger">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-warning pull-left"></i>{{ form_errors(formBib.fechaDesde) }}
+        </div>
+    {% endif %}
+    {% if (form_errors(formBib.fechaHasta)) %}
+        <div class="alert alert-danger">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-warning pull-left"></i>{{ form_errors(formBib.fechaHasta) }}
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box blue-hoki tabbable">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <em class="fa fa-user"><sup class="fa fa-list"></sup></em>&nbsp;Detalles de Usuario
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="tabbable portlet-tabs">
+                        <ul class="nav nav-tabs">
+                            <li>
+                                <a data-toggle="tab" href="#portlet_tab_3">
+                                    Categor&iacute;as </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#portlet_tab_2">
+                                    Datos Profesionales </a>
+                            </li>
+                            <li class="active">
+                                <a data-toggle="tab" href="#portlet_tab_1">
+                                    Datos Personales </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="portlet_tab_3" class="tab-pane">
+                                <div class="table-scrollable">
+                                    <table role="grid" id="categorias"
+                                           class="table table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Docente</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categDoc }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Investigativa</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categInv }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Cient&iacute;fica</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categCien }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Ocupacional</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categOcup }}</p>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="portlet_tab_2" class="tab-pane">
+                                <div class="table-scrollable">
+                                    <table role="grid" id="profesionales"
+                                           class="table table-hover">
+                                        <tbody>
+                                        {% if usuario.estudiante == true %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Estudiante</strong>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr role="row">
+                                            <td>
+                                                <strong>{% if usuario.estudiante == false %}
+                                                        Tipo de Profesional
+                                                    {% else %}
+                                                        Carrera en Salud
+                                                    {% endif %}</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.tipoPro }}</p>
+                                            </td>
+                                        </tr>
+                                        {% if usuario.estudiante == false %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Especialidad</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.especialidad }}</p>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>
+                                                <strong>{% if usuario.estudiante == false %}
+                                                        Profesi&oacute;n
+                                                    {% else %}
+                                                        Carrera fuera de Salud
+                                                    {% endif %}</strong>
+
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.profesion }}</p>
+                                            </td>
+                                        </tr>
+                                        {% if usuario.estudiante == false %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Cargo</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.cargo }}</p>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>
+                                                <strong>Instituci&oacute;n</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.institucion }}</p>
+                                            </td>
+                                        </tr>
+                                        {% if usuario.estudiante == false %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Dedicaci&oacute;n</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.dedicacion }}</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Experiencia</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.experiencia }}</p>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="portlet_tab_1" class="tab-pane active">
+                                <div class="table-scrollable">
+                                    <table role="grid" id="personales"
+                                           class="table table-hover">
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Nombre</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.nombres }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Apellidos</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.apellidos }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Carnet de Identidad</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.carnetId }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Pa&iacute;s</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.pais }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Correo Electr&oacute;nico</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.email }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Tel&eacute;fono</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.telefono }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Fecha de Inscripci&oacute;n</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.fechaIns|date('d/m/Y') }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Tema de Investigaci&oacute;n</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.temaInv }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Atendido por</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.atendidopor }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Observaciones</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.observaciones }}</p>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div aria-hidden="false" role="dialog" tabindex="-1" id="pregunta" class="modal fade bs-modal-sm in"
+         style="display: none;">
+        <div class="modal-dialog modal-full">
+            {{ form_start(form, {'attr':{'class':'form-horizontal form-row-seperated' }}) }}
+            <div class="modal-content" style="padding-left: 10px">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                    <h4 class="modal-title"><i class="fa fa-question-circle"></i>&nbsp;Pregunta de Referencia</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-md-6 form-group2">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Texto de pregunta</label>
+
+                                <div class="col-sm-7"> {{ form_widget(form.pregunta,{ 'attr': {'class':'form-control input-large', 'style':'float:right' }}
+                                    ) }}
+                                </div>
+                            </div>
+                            <br/>
+
+                            <div class="row">
+                                <label class="col-sm-4 control-label">V&iacute;a de Solicitud</label>
+
+                                <div class="col-sm-7">{{ form_widget(form.viaSolicitud,{ 'attr': {'class':'form-control input-medium', 'style':'float:right' }}
+                                    ) }}
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="col-sm-4 control-label" style="color:#802420; font-weight: bold">Desiderata</label>
+
+                                    <div class="col-md-7"
+                                         style="text-align: center">{{ form_widget(form.desiderata,{ 'attr': {'class':'form-control input-large' }}
+                                        ) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="col-md-6 form-group2">
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Texto de respuesta</label>
+
+                                <div class="col-sm-7"> {{ form_widget(form.respuesta,{ 'attr': {'class':'form-control input-large', 'style':'float:right' }}
+                                    ) }}
+                                </div>
+                            </div>
+                            <br/>
+
+                            <div class="row">
+                                <label class="col-sm-4 control-label">Fuentes de Informaci&oacute;n</label>
+
+                                <div class="col-md-7">
+                                    <ul class="fuentesInfo"
+                                        data-prototype="{% filter escape %}{% include 'DSIBundle:Prototypes:fuentesInfoPrototype.html.twig' with {'form': form.fuentesInfo.vars.prototype} %}{% endfilter %}"
+                                        style="list-style: none">
+                                        {% for fuenteInfo in form.fuentesInfo %}
+                                            <li>{{ form_widget(fuenteInfo.id,{ 'attr': {'class':'form-control input-medium' }}
+                                                ) }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <br/>
+
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: center">
+                                    <div class="col-md-4">
+                                        <label>{{ form_widget(form.tipoRespuesta[0],{ 'attr': {'class':'form-control input-xlarge' }}
+                                            ) }}
+                                            {{ form.tipoRespuesta[0].vars.label }}</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>{{ form_widget(form.tipoRespuesta[1],{ 'attr': {'class':'form-control input-xlarge' }}
+                                            ) }}
+                                            {{ form.tipoRespuesta[1].vars.label }}</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>{{ form_widget(form.tipoRespuesta[2],{ 'attr': {'class':'form-control input-xlarge' }}
+                                            ) }}
+                                            {{ form.tipoRespuesta[2].vars.label }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-2">
+                                    <label>Nombre de
+                                        adjunto{{ form_widget(form.name,{ 'attr': {'class':'form-control input-small' }}
+                                        ) }}
+                                    </label>
+                                </div>
+                                <div class="col-md-10">{{ form_widget(form.file,{ 'attr': {'class':'input-xlarge', 'style':'padding-top: 30px' }}
+                                    ) }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{ form_widget(form.Guardar, {'attr':{'class':'btn blue' }}) }}
+                    <button id="cancelButton" data-dismiss="modal" class="btn default" type="button">Cancelar</button>
+                </div>
+            </div>
+            {{ form_widget(form.usuario, {'attr': {'value': usuario.Id }}) }}
+            {% do form.fuentesInfo.setRendered %}
+            {{ form_end(form) }}
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div aria-hidden="false" role="dialog" tabindex="-1" id="solicitud" class="modal fade bs-modal-sm in"
+         style="display: none;">
+        {{ form_start(formBib, {'attr':{'class':'form-horizontal form-row-seperated' }}) }}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                    <h4 class="modal-title"><i class="fa fa-question-circle"></i>&nbsp;Solicitud de Bibliograf&iacute;a
+                    </h4>
+                </div>
+                <div class="modal-body form">
+                    <div class="form-group1">
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Tema solicitado</label>
+
+                            <div class="col-sm-7"> {{ form_widget(formBib.tema,{ 'attr': {'class':'form-control input-large pull-right' }}
+                                ) }}
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="row">
+                            <label class="col-sm-4 control-label"> A&ntilde;os de B&uacute;squeda</label>
+
+                            <div class="col-sm-7">
+                                <div data-date-format="dd/mm/yyyy" data-date="10/11/2012"
+                                     class="input-group input-large date-picker input-daterange" style="float: right">
+                                    {{ form_widget(formBib.fechaDesde, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", 'placeholder':'De Fecha...', 'style':'width:100%' }}
+                                    ) }}<span class="input-group-addon">a</span>
+                                    {{ form_widget(formBib.fechaHasta, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", 'placeholder':'Fecha...', 'style':'width:100%' }}
+                                    ) }}
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Estilo Bibliogr&aacute;fico</label>
+
+                            <div class="col-sm-7"> {{ form_widget(formBib.estilo,{ 'attr': {'class':'form-control input-medium pull-right' }}
+                                ) }}
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="row">
+                            <label class="col-sm-4 control-label">Motivo de investigaci&oacute;n</label>
+
+                            <div class="col-sm-7"> {{ form_widget(formBib.motivo,{ 'attr': {'class':'form-control input-medium pull-right' }}
+                                ) }}
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <legend>Idiomas</legend>
+                                        <div>
+                                            {#{{ form_widget(form.idiomas,{ 'attr': {'class':'form-control input-medium' }})}}#}
+                                            <ul class="idiomas"
+                                                    {#data-prototype="{% filter escape %}{% include 'DSIBundle:Prototypes:fuentesInfoPrototype.html.twig' with {'form': form.idiomas.vars.prototype} %}{% endfilter %}"#}
+                                                style="list-style: none; float: left; padding: 0">
+                                                {% for idioma in formBib.idiomas %}
+                                                    <li>
+                                                        {{ form_widget(idioma,{ 'attr': {'class':'form-control input-medium pull-right' }}
+                                                        ) }}{{ idioma.vars.label }}
+                                                        <br/>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <legend>Tipos de Documentos</legend>
+                                        <div>
+                                            {#{{ form_widget(form.idiomas,{ 'attr': {'class':'form-control input-medium' }})}}#}
+                                            <ul class="tipoDocs"
+                                                    {#data-prototype="{% filter escape %}{% include 'DSIBundle:Prototypes:fuentesInfoPrototype.html.twig' with {'form': form.tipoDocs.vars.prototype} %}{% endfilter %}"#}
+                                                style="list-style: none; float: left; padding: 0">
+                                                {% for tipoDoc in formBib.tiposDocs %}
+                                                    <li>
+                                                        {{ form_widget(tipoDoc,{ 'attr': {'class':'form-control input-medium  pull-right' }}
+                                                        ) }}{{ tipoDoc.vars.label }}
+                                                        <br/>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    {{ form_widget(formBib.Guardar, {'attr':{'class':'btn blue' }}) }}
+                    <button data-dismiss="modal" class="btn default" type="button">Cancelar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        {% do formBib.idiomas.setRendered %}
+        {% do formBib.tiposDocs.setRendered %}
+        {{ form_end(formBib) }}
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+{% endblock %}
+
+{% block scripts %}
+    <script type="application/javascript">
+        function asd(event, id) {
+            document.getElementById('formRecepcion_usuario').value = id;
+        }
+    </script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{{ asset('metronic/assets/global/plugins/gritter/js/jquery.gritter.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ asset('metronic/assets/global/plugins/select2/select2.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/select2/select2_locale_es.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker_es.js') }}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="{{ asset('metronic/assets/global/scripts/metronic.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('metronic/assets/admin/layout/scripts/layout.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('metronic/assets/admin/layout/scripts/quick-sidebar.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('metronic/assets/admin/layout/scripts/demo.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/dsi/js/dsi.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function () {
+            Metronic.init(); // init metronic core components
+            Layout.init(); // init current layout
+            QuickSidebar.init(); // init quick sidebar
+            Demo.init(); // init demo features
+            {% if currentlyIn %}
+            Global.notiUserCurrentlyInLib('{{ usuario.nombres }}', '{{ usuario.apellidos }}');
+            {% endif %}
+            {% if usuario.banned %}
+            Global.notiBannedUser('{{ usuario.nombres }}', '{{ usuario.apellidos }}');
+            {% endif %}
+            Global.initSelects();
+            DSI.initDatepickers();
+            DSI.initDetailsEmbeddedFormsFunctionalities();
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+{% endblock %}

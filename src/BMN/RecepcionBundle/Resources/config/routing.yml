@@ -1,0 +1,25 @@
+recepcion_entrada:
+    pattern:  /entrada
+    defaults: { _controller: RecepcionBundle:Default:entrada }
+
+recepcion_salida:
+    pattern:  /salida/{id}
+    defaults: { _controller: RecepcionBundle:Default:salida }
+
+recepcion_salida_masiva:
+    pattern:  /salida-masiva/
+    defaults: { _controller: RecepcionBundle:Default:salidaMasiva }
+
+recepcion_listado_entradas:
+    pattern:  /listado_entradas/
+    defaults: { _controller: RecepcionBundle:Default:listadoEntradas }
+
+entradas_ajax_listado:
+    path: /getRecepcionEntradas/
+    defaults: {_controller: RecepcionBundle:Default:getEntradas}
+    options:
+        expose: true
+
+recepcion_limpiar_filtros:
+    pattern:  /limpiar_filtros/
+    defaults: { _controller: RecepcionBundle:Default:limpiarFiltros }

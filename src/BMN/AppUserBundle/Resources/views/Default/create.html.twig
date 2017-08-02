@@ -1,0 +1,196 @@
+{% extends '::frontend.html.twig' %}
+{% block header %}
+    {{ form_start(formUsua) }}
+    <section class="header-content">
+        <h1 class="pull-left" style="position: relative">
+            Formulario de Usuario
+        </h1>
+
+        <div class="pull-right">
+            <a class="btn btn-primary" onclick="document.forms[0].submit()">
+                <i class="fa fa-save"></i>
+                Guardar
+            </a></div>
+
+        <div class="clearfix"></div>
+
+    </section>
+{% endblock %}
+{% block body %}
+    <section class="main-content">
+    {% if (form_errors(formUsua)) %}
+        <div class="alert alert-danger">{{ form_errors(formUsua) }}</div>
+    {% endif %}
+    {% if (form_errors(formUsua.password.first)) %}
+        <div class="alert alert-danger">{{ form_errors(formUsua.password.first) }}</div>
+    {% endif %}
+    {% for mensaje in app.session.flashbag.get('info_add') %}
+        <div class="alert alert-success alert-dismissible">{{ mensaje }}</div>
+    {% endfor %}
+    {% for mensaje in app.session.flashbag.get('info_edit') %}
+        <div class="alert alert-info alert-dismissible">{{ mensaje }}</div>
+    {% endfor %}
+    {% for mensaje in app.session.flashbag.get('info_delete') %}
+        <div class="alert alert-warning alert-dismissible">{{ mensaje }}</div>
+    {% endfor %}
+    {% if formImg is defined %}
+        {% if (form_errors(formImg)) %}
+            <div class="alert alert-danger">{{ form_errors(formImg) }}</div>
+        {% endif %}
+        {% if (form_errors(formImg.name)) %}
+            <div class="alert alert-danger">{{ form_errors(formImg.name) }}</div>
+        {% endif %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if tipoForm=='reset' %}
+                        <h3>{{ formUsua.nombre.vars.value }} {{ formUsua.apellidos.vars.value }}</h3>
+                    {% endif %}
+                    <br/>
+
+                    <div class="box-body">
+                        {% if tipoForm =='add' or tipoForm =='edit' %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre:</label>
+                                        {{ form_widget(formUsua.nombre) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Apellidos:</label>
+                                        {{ form_widget(formUsua.apellidos) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre de Usuario:</label>
+                                        {{ form_widget(formUsua.username) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            {% do formUsua.nombre.setRendered %}
+                            {% do formUsua.apellidos.setRendered %}
+                            {% do formUsua.username.setRendered %}
+                        {% endif %}
+                        {% if tipoForm == 'add' or  tipoForm == 'reset' or tipoForm == 'addAsocClie' or tipoForm == 'editAsocClie' %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Contraseña:</label>
+                                        {{ form_widget(formUsua.password.first, {'attr':{'class':'form-control' }}) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Repetir Contraseña:</label>
+                                        {{ form_widget(formUsua.password.second, {'attr':{'class':'form-control' }}) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            {% do formUsua.password.first.setRendered %}
+                            {% do formUsua.password.second.setRendered %}
+                        {% endif %}
+                        {% if tipoForm == 'add' or tipoForm =='edit' %}
+                        <fieldset>
+                            <div class="form-group">
+                                <legend><label style="padding: 0">
+                                        <strong>Roles</strong>&nbsp; &nbsp; &nbsp; &nbsp;</label>
+                                </legend>
+                                <br/>
+                                {% for role in formUsua.roles %}
+                                    <div class="form-group" style="border-top: 5px">
+                                        <div class="checkbox c-checkbox pull-left mt0" style="padding: 0">
+                                            <label style="padding: 0">
+                                                {{ form_widget(role) }}&nbsp; &nbsp; &nbsp; &nbsp;
+                                                {{ role.vars.label }}&nbsp; &nbsp; &nbsp; &nbsp;
+
+                                                <span class="fa fa-check"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </fieldset>
+                    </div>
+                    {% if tipoForm =='edit' %}
+                        <div class="pull-right">
+                            <a class="btn btn-primary" href="#" data-target="#myModal" data-toggle="modal">
+                                <i class="fa fa-image"></i>
+                                Foto
+                            </a>
+                            {% if userImage.id is not null %}
+                                <div class="user-block-picture">
+                                    <img src="{{ asset('local/img/users/'~userImage.path) }}"{# asset('local/img/users/'~app.session.get('avatar').path) #} alt="Avatar"
+                                         width="60" height="60"
+                                         class="img-thumbnail">
+                                    <!-- Status when collapsed
+                                    <div class="user-block-status">
+                                        <div class="point point-success point-lg"></div>
+                                    </div>-->
+                                    <a title="Eliminar Foto"
+                                       href="{{ path('appuser_rem', {'userId':formUsua.id.vars.value, 'id':userImage.id}) }}"><em
+                                                class="fa fa-minus-circle"></em></a>
+                                </div>
+                                <div></div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% else %}
+                        {% do formUsua.admin.setRendered %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>{{ form_end(formUsua) }}
+{% endblock %}
+{% block modal %}
+    {% if formImg is defined %}
+        {{ form_start(formImg) }}
+        <div class="modal fade" aria-hidden="true" aria-labelledby="myModalLabel"
+        role="dialog" tabindex="-1" id="myModal"
+        style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" data-dismiss="modal"
+                            type="button">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Insertar foto de usuario</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre:</label>
+
+                        <div>{{ form_widget(formImg.name,{ 'attr': {'class':'form-control' }}
+                            ) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagen:</label>
+
+                        <div>{{ form_widget(formImg.file) }}
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" type="button">
+                            Cerrar
+                        </button>
+                        {{ form_widget(formImg.Guardar,{ 'attr': {'class':'btn btn-primary' }}
+                        ) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(formImg) }}
+    {% endif %}
+{% endblock %}

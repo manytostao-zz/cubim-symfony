@@ -1,0 +1,1208 @@
+{% extends '::frontend2.html.twig' %}
+{% block title %}
+    <title>CUBiM | Registro</title>
+{% endblock %}
+{% block page_title %}
+    <h3 class="page-title">
+        Registro
+    </h3>
+{% endblock %}
+{% block page_style %}
+    <link href="{{ asset('metronic/assets/global/plugins/gritter/css/jquery.gritter.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/clockface/css/clockface.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+
+    <link href="{{ asset('metronic/assets/global/plugins/select2/select2.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset('metronic/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css') }}"
+          rel="stylesheet"
+          type="text/css"/>
+
+{% endblock %}
+{% block page_bar %}
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-users"></i>
+            </li>
+            <li>
+                <i class="fa fa-angle-right"></i>
+                <a href="{{ path('usuario_lista', {'modulo':'usuario'}) }}">Listado de Usuarios</a>
+            </li>
+            <li>
+                <i class="fa fa-angle-right"></i>
+                <a href="{{ path('usuario_detalles', {'modulo':'usuario', 'id':usuario.id}) }}">Detalles de
+                    Usuario</a>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <div class="btn-group pull-right">
+                <button data-close-others="true" data-delay="1000" data-hover="" data-toggle="dropdown"
+                        class="btn btn-fit-height btn-primary dropdown-toggle" type="button">
+                    Operaciones <i class="fa fa-angle-down"></i>
+                </button>
+                <ul role="menu" class="dropdown-menu pull-right">
+                    <li>
+                        <a href="{{ path('usuario_editar', {'id':usuario.id,'modulo':'usuario'}) }}"
+                           title="Editar Usuario">
+                            <i class="fa fa-edit"></i>
+                            Editar Usuario
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="modal" href="#delete"
+                           title="Eliminar Usuario">
+                            <i class="fa fa-eraser"></i>
+                            Eliminar Usuario
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('usuario_adicionar', {'modulo':'usuario'}) }}"
+                           title="Adicionar Usuario">
+                            <i class="fa fa-user"></i>
+                            Adicionar Usuario
+                        </a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    {% if not usuario.banned %}
+                        <li>
+                            <a href="{{ path('usuario_bannear', {'id':usuario.id}) }}"
+                               title="Prohibir Acceso">
+                                <i class="fa fa-ban"></i>
+                                Prohibir Acceso
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ path('usuario_desbannear', {'id':usuario.id}) }}"
+                               title="Permitir Acceso">
+                                <i class="fa fa-check-circle"></i>
+                                Permitir Acceso
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block header %}
+    <section class="header-content">
+        <h1 class="pull-left" style="position: relative"> Operaciones
+        </h1>
+
+        <div class="pull-right">
+            {% if is_granted('ROLE_SUPER_ADMINISTRACIÓN') or is_granted('ROLE_ADMINISTRACIÓN') %}
+                <a class="btn btn-default"
+                   onclick="return confirm('¿Está seguro que desea eliminar este usuario?');"
+                   href="{{ path('usuario_eliminar', {'id': usuario.id, 'modulo':'usuario'}) }}"
+                   title="Borrar">
+                    <i class="fa fa-trash-o fa-2x"></i>
+                </a>
+                <a class="btn btn-default"
+                   href="{{ path('usuario_editar', {'id':usuario.id, 'modulo':'usuario'}) }}" title="Editar">
+                    <i class="fa fa-edit fa-2x"></i>
+                </a>
+            {% endif %}
+            <a class="btn btn-default" href="{{ path('usuario_lista', {'modulo':'usuario'}) }}" title="Ir a Listado">
+                <em class="fa fa-list fa-2x"></em>
+            </a>
+            <a class="btn btn-primary" href="{{ path('usuario_adicionar', {'modulo':'usuario'}) }}"
+               title="Adicionar Usuario">
+                <i class="fa fa-plus fa-2x"></i>
+            </a>
+        </div>
+        <div class="clearfix"></div>
+
+    </section>
+{% endblock %}
+
+{% block page_content %}
+    {% for mensaje in app.session.flashbag.get('info_add') %}
+        <div class="alert alert-success alert-dismissible">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-check pull-left"></i>
+            {{ mensaje }}
+        </div>
+    {% endfor %}
+    {% for mensaje in app.session.flashbag.get('info_edit') %}
+        <div class="alert alert-info alert-dismissible">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-pencil-square-o pull-left"></i>{{ mensaje }}</div>
+    {% endfor %}
+    {% for mensaje in app.session.flashbag.get('info_delete') %}
+        <div class="alert alert-warning alert-dismissible">
+            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+            <i class="fa-lg fa fa-minus-square pull-left"></i>{{ mensaje }}</div>
+    {% endfor %}
+    {% if usuario.tipoUsua is not null %}
+        <div class="note note-success">
+            <h4 style="margin: 0">
+                Usuario {{ usuario.tipoUsua }} #<strong>{{ usuario.carnetBib }}</strong>
+            </h4>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box blue-hoki tabbable">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <em class="fa fa-user"><sup class="fa fa-list"></sup></em>&nbsp;Detalles de Usuario
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="tabbable portlet-tabs">
+                        <ul class="nav nav-tabs">
+                            <li {% if active['portlet'] is defined and active['portlet'] == 'historial' %} class="active" {% endif %}>
+                                <a data-toggle="tab" href="#portlet_tab_4">
+                                    Historial </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#portlet_tab_3">
+                                    Categor&iacute;as </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#portlet_tab_2">
+                                    Datos Profesionales </a>
+                            </li>
+                            <li {% if active['portlet'] is not defined %} class="active" {% endif %}>
+                                <a data-toggle="tab" href="#portlet_tab_1">
+                                    Datos Personales </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="portlet_tab_4"
+                                 class="tab-pane{% if active['portlet'] is defined and active['portlet'] == 'historial' %} active {% endif %}">
+                                <div class="portlet light bordered">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption">
+                                            <i class="fa fa-archive"></i>
+								<span class="caption-subject font-blue-hoki">
+								Huella digital</span>
+                                            <!--<span class="caption-helper">por servicio</span>-->
+                                        </div>
+                                        <ul class="nav nav-tabs">
+                                            <li
+                                                    {% if (active['portlet'] is defined
+                                                    and active['portlet'] == 'historial'
+                                                    and active['servicio'] == 'recepcion')
+                                                    or active['servicio'] is not defined %}
+                                                        class="active"
+                                                    {% endif %}
+                                            >
+                                                <a data-toggle="tab" href="#portlet_tab3">
+                                                    Recepci&oacute;n </a>
+                                            </li>
+                                            <li
+                                                    {% if (active['portlet'] is defined
+                                                    and active['portlet'] == 'historial'
+                                                    and active['servicio'] == 'referencia') %}
+                                                        class="active"
+                                                    {% endif %}
+                                            >
+                                                <a data-toggle="tab" href="#portlet_tab2">
+                                                    Referencia </a>
+                                            </li>
+                                            <li
+                                                    {% if (active['portlet'] is defined
+                                                    and active['portlet'] == 'historial'
+                                                    and active['servicio'] == 'navegacion') %}
+                                                        class="active"
+                                                    {% endif %}
+                                            >
+                                                <a data-toggle="tab" href="#portlet_tab1">
+                                                    Sala de Navegaci&oacute;n </a>
+                                            </li>
+                                            <li
+                                                    {% if (active['portlet'] is defined
+                                                    and active['portlet'] == 'historial'
+                                                    and active['servicio'] == 'lectura') %}
+                                                        class="active"
+                                                    {% endif %}
+                                            >
+                                                <a data-toggle="tab" href="#portlet_tab4">
+                                                    Sala de Lectura </a>
+                                            </li>
+                                            <li
+                                                    {% if (active['portlet'] is defined
+                                                    and active['portlet'] == 'historial'
+                                                    and active['servicio'] == 'bibliografia') %}
+                                                        class="active"
+                                                    {% endif %}
+                                            >
+                                                <a data-toggle="tab" href="#portlet_tab0">
+                                                    Bibliograf&iacute;a </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="portlet-body tabbable-line">
+                                        <div class="tab-content">
+                                            <div id="portlet_tab0" class="tab-pane
+                                                    {% if (active['portlet'] is defined
+                                            and active['portlet'] == 'historial'
+                                            and active['servicio'] == 'referencia') %}
+                                                        active
+                                                    {% endif %}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="portlet light bg-inverse">
+                                                            <div class="portlet-title">
+                                                                <div class="caption">
+                                                                    <i class="fa fa-bars"></i>Filtros del Reporte
+                                                                </div>
+                                                                <div class="tools">
+                                                                    <div class="btn-group">
+                                                                        <a class="btn default" href="#"
+                                                                           data-toggle="dropdown">
+                                                                            Columnas <i class="fa fa-angle-down"></i>
+                                                                        </a>
+
+                                                                        <div id="sample_0_column_toggler"
+                                                                             class="dropdown-menu hold-on-click dropdown-checkboxes pull-right"
+                                                                             style="width: 185px">
+                                                                            <label><input type="checkbox"
+                                                                                          data-column="1">Atendido
+                                                                                por</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="2">Tema</label>
+                                                                            <label><input type="checkbox"
+                                                                                          data-column="3">Motivo de
+                                                                                Investigaci&oacute;n</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="4">A&ntilde;os</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="5">Estilo
+                                                                                Bibliogr&aacute;fico</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="6">Idiomas</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="7">Tipos de
+                                                                                Documentos</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="8">Fecha
+                                                                                Solicitud</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="btn-group">
+                                                                        <a data-toggle="dropdown" href="#"
+                                                                           onclick="document.forms[0].submit();"
+                                                                           class="btn btn-default btn-sm">
+                                                                            <i class="fa fa-filter"></i> Filtrar
+                                                                        </a>
+                                                                    </div>
+                                                                    <a class="expand" href="javascript:">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="portlet-body display-hide">
+                                                                {{ form_start(formBib) }}
+                                                                <div class="table-scrollable">
+                                                                    <table>
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th>Fecha de Solicitud</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td class="col-md-2">
+                                                                                {{ form_widget(formBib.idioma,{ 'attr': {'class':'form-control input-medium pull-right', 'placeholder':'Idioma', 'multiple':'multiple', 'name':'form[idioma][]' }}
+                                                                                ) }}
+                                                                            </td>
+                                                                            <td class="col-md-2">
+                                                                                {{ form_widget(formBib.tipoDocs,{ 'attr': {'class':'form-control input-medium pull-right', 'placeholder':'Tipo de Documento', 'multiple':'multiple', 'name':'form[tipoDocs][]' }}
+                                                                                ) }}
+                                                                            </td>
+                                                                            <td class="col-md-3">
+                                                                                <div data-date-format="dd/mm/yyyy"
+                                                                                     data-date="10/11/2012"
+                                                                                     class="input-group input-large date-picker input-daterange">
+                                                                                    <span class="input-group-addon">De</span>
+                                                                                    {{ form_widget(formBib.fechaDesde, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", 'placeholder':'De Fecha...', 'style':'width:100%' }}
+                                                                                    ) }}<span
+                                                                                            class="input-group-addon">a</span>
+                                                                                    {{ form_widget(formBib.fechaHasta, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", 'placeholder':'Fecha...', 'style':'width:100%' }}
+                                                                                    ) }}
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                Sin responder {{ form_widget(formBib.unanswered) }}
+                                                                {{ form_end(formBib) }}
+                                                                <br/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-striped table-bordered table-hover"
+                                                       id="sample_0">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <strong>Id</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Atendido Por</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Tema</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Motivo de Investigaci&oacute;n</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>A&ntilde;os</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Estilo Bibliogr&aacute;fico</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Idiomas</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Tipos de Documentos</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Fecha Solicitud</strong>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="portlet_tab1" class="tab-pane
+                                                    {% if (active['portlet'] is defined
+                                            and active['portlet'] == 'historial'
+                                            and active['servicio'] == 'navegacion') %}
+                                                        active
+                                                    {% endif %}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="portlet light bg-inverse">
+                                                            <div class="portlet-title">
+                                                                <div class="caption">
+                                                                    <i class="fa fa-bars"></i>Filtros del Reporte
+                                                                </div>
+                                                                <div class="tools">
+                                                                    <div class="btn-group">
+                                                                        <a data-toggle="dropdown" href="#"
+                                                                           onclick="document.forms[1].submit();"
+                                                                           class="btn btn-default btn-sm">
+                                                                            <i class="fa fa-filter"></i> Filtrar
+                                                                        </a>
+                                                                    </div>
+                                                                    <a class="expand" href="javascript:">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="portlet-body display-hide">
+                                                                {{ form_start(formNave) }}
+                                                                <table>
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Estaci&oacute;n
+                                                                        </th>
+                                                                        <th>Fuentes
+                                                                        </th>
+                                                                        <th>Solo correo
+                                                                        </th>
+                                                                        <th>Rango de Fecha
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formNave.pc,{ 'attr': {'class':'form-control input-sm' }}
+                                                                            ) }}
+                                                                        </td>
+                                                                        <td class="col-md-3">
+                                                                            {{ form_widget(formNave.fuentesInfo,{ 'attr': {'class':'form-control input-sm' }}
+                                                                            ) }}
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formNave.correo,{ 'attr': {'class':'form-control input-sm' }}
+                                                                            ) }}
+                                                                        </td>
+                                                                        <td class="col-md-3">
+                                                                            <div data-date-format="dd/mm/yyyy"
+                                                                                 data-date="{{ formNave.fechaDesde.vars.value }}"
+                                                                                 class="input-group input-large date-picker input-daterange">
+                                                                                {{ form_widget(formNave.fechaDesde, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", }}
+                                                                                ) }}
+                                                                                <span class="input-group-addon">
+												a </span>
+                                                                                {{ form_widget(formNave.fechaHasta, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'" }}
+                                                                                ) }}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                {{ form_end(formNave) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-striped table-bordered table-advance table-hover"
+                                                       id="sample_3">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="text-align: center">Fecha
+                                                        </th>
+                                                        <th style="text-align: center">Estaci&oacute;n
+                                                        </th>
+                                                        <th style="text-align: center">Solo correo
+                                                        </th>
+                                                        <th style="text-align: center">Fuentes
+                                                        <th style="text-align: center">Necesidad
+                                                        <th style="text-align: center">Observaciones
+                                                        </th>
+                                                        <th style="text-align: center">Entrada</th>
+                                                        <th style="text-align: center">Salida</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="portlet_tab2" class="tab-pane
+                                                    {% if (active['portlet'] is defined
+                                            and active['portlet'] == 'historial'
+                                            and active['servicio'] == 'referencia') %}
+                                                        active
+                                                    {% endif %}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="portlet light bg-inverse">
+                                                            <div class="portlet-title">
+                                                                <div class="caption">
+                                                                    <i class="fa fa-bars"></i>Filtros del Reporte
+                                                                </div>
+                                                                <div class="tools">
+                                                                    <div class="btn-group">
+                                                                        <a class="btn default" href="#"
+                                                                           data-toggle="dropdown">
+                                                                            Columnas <i class="fa fa-angle-down"></i>
+                                                                        </a>
+
+                                                                        <div id="sample_2_column_toggler"
+                                                                             class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                                                            <label><input type="checkbox"
+                                                                                          data-column="0">Atendido
+                                                                                Por</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="1">Pregunta</label>
+                                                                            <label><input type="checkbox"
+                                                                                          data-column="2">V&iacute;a</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="3">Respuesta</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="4">Tipo</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="5">Fuente</label>
+                                                                            <label><input type="checkbox"
+                                                                                          data-column="6">Adjunto</label>
+                                                                            <label><input type="checkbox"
+                                                                                          data-column="7">Desiderata</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="8">Fecha
+                                                                                Solicitud</label>
+                                                                            <label><input type="checkbox" checked
+                                                                                          data-column="9">Fecha
+                                                                                Respuesta</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <a class="expand" href="javascript:">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="portlet-body display-hide">
+                                                                {{ form_start(formRefe) }}
+                                                                <table>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formRefe.unanswered,
+                                                                            {'attr':
+                                                                                {'onclick':'document.forms[2].submit();' }}) }}
+                                                                            Sin
+                                                                            Responder
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formRefe.desiderata,
+                                                                            {'attr':
+                                                                                {'onclick':'document.forms[2].submit();' }}) }}
+                                                                            Desiderata
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formRefe.document,
+                                                                            {'attr':
+                                                                                {'onclick':'document.forms[2].submit();' }}) }}
+                                                                            Documento
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formRefe.reference,
+                                                                            {'attr':
+                                                                                {'onclick':'document.forms[2].submit();' }}) }}
+                                                                            Referencia
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formRefe.answer,
+                                                                            {'attr':
+                                                                                {'onclick':'document.forms[2].submit();' }}) }}
+                                                                            Respuesta
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                {{ form_end(formRefe) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-striped table-bordered table-hover"
+                                                       id="sample_2">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <strong>Atendido Por</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Pregunta</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>V&iacute;a</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Respuesta</strong>
+                                                        </th>
+                                                        <th><strong>Tipo</strong></th>
+                                                        <th>
+                                                            <strong>Fuentes</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Adjunto</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Desiderata</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Fecha Solicitud</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Fecha Respuesta</strong>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="portlet_tab3" class="tab-pane
+                                                    {% if (active['portlet'] is defined
+                                            and active['portlet'] == 'historial'
+                                            and active['servicio'] == 'recepcion')
+                                            or active['servicio'] is not defined %}
+                                                        active
+                                                    {% endif %}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="portlet light bg-inverse">
+                                                            <div class="portlet-title">
+                                                                <div class="caption">
+                                                                    <i class="fa fa-bars"></i>Filtros del Reporte
+                                                                </div>
+                                                                <div class="tools">
+                                                                    <div class="btn-group">
+                                                                        <a data-toggle="dropdown" href="#"
+                                                                           onclick="document.forms[3].submit();"
+                                                                           class="btn btn-default btn-sm">
+                                                                            <i class="fa fa-filter"></i> Filtrar
+                                                                        </a>
+                                                                    </div>
+                                                                    <a class="expand" href="javascript:">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="portlet-body display-hide">
+                                                                {{ form_start(formRece) }}
+                                                                <table>
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th style="padding-left: 10px">Chapilla
+                                                                        </th>
+                                                                        <th>Servicios
+                                                                        </th>
+                                                                        <th>Rango de Fecha
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formRece.chapilla,{ 'attr': {'class':'form-control input-small' }}
+                                                                            ) }}
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formRece.servicio,{ 'attr': {'class':'form-control input-medium' }}
+                                                                            ) }}
+                                                                        </td>
+                                                                        <td class="col-md-3">
+                                                                            <div data-date-format="dd/mm/yyyy"
+                                                                                 data-date="{{ formRece.fechaDesde.vars.value }}"
+                                                                                 class="input-group input-large date-picker input-daterange">
+                                                                                {{ form_widget(formRece.fechaDesde, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", }}
+                                                                                ) }}
+                                                                                <span class="input-group-addon">
+												a </span>
+                                                                                {{ form_widget(formRece.fechaHasta, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'" }}
+                                                                                ) }}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                {{ form_end(formRece) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-striped table-bordered table-advance table-hover"
+                                                       id="sample_1">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="text-align: center">Fecha
+                                                        </th>
+                                                        <th style="text-align: center">Servicio
+                                                        </th>
+                                                        <th style="text-align: center">Chapilla
+                                                        </th>
+                                                        <th style="text-align: center">Observaciones
+                                                        </th>
+                                                        <th style="text-align: center">Entrada</th>
+                                                        <th style="text-align: center">Salida</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+
+                                            <div id="portlet_tab4" class="tab-pane
+                                                    {% if (active['portlet'] is defined
+                                            and active['portlet'] == 'historial'
+                                            and active['servicio'] == 'lectura') %}
+                                                        active
+                                                    {% endif %}">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="portlet light bg-inverse">
+                                                            <div class="portlet-title">
+                                                                <div class="caption">
+                                                                    <i class="fa fa-bars"></i>Filtros del Reporte
+                                                                </div>
+                                                                <div class="tools">
+                                                                    <div class="btn-group">
+                                                                        <a data-toggle="dropdown" href="#"
+                                                                           onclick="document.forms[4].submit();"
+                                                                           class="btn btn-default btn-sm">
+                                                                            <i class="fa fa-filter"></i> Filtrar
+                                                                        </a>
+                                                                    </div>
+                                                                    <a class="expand" href="javascript:">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="portlet-body display-hide">
+                                                                {{ form_start(formLect) }}
+                                                                <table>
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                        <th>Rango de Fecha</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formLect.modalidades,{ 'attr': {'class':'form-control input-medium pull-right', 'placeholder':'Modalidades', 'multiple':'multiple', 'name':'form[modalidades][]' }}
+                                                                            ) }}
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                            {{ form_widget(formLect.detalle,{ 'attr': {'class':'form-control input-medium pull-right', 'placeholder':'Detalle'}}
+                                                                            ) }}
+                                                                        </td>
+                                                                        <td class="col-md-3">
+                                                                            <div data-date-format="dd/mm/yyyy"
+                                                                                 data-date="10/11/2012"
+                                                                                 class="input-group input-large date-picker input-daterange">
+                                                                                <span class="input-group-addon">De</span>
+                                                                                {{ form_widget(formLect.fechaDesde, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", 'placeholder':'De Fecha...', 'style':'width:100%' }}
+                                                                                ) }}<span
+                                                                                        class="input-group-addon">a</span>
+                                                                                {{ form_widget(formLect.fechaHasta, {'attr':{'class':'form-control', 'data-toggle':'masked', 'data-inputmask': "'mask': '99/99/9999'", 'placeholder':'Fecha...', 'style':'width:100%' }}
+                                                                                ) }}
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                {{ form_end(formLect) }}
+                                                                <br/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-striped table-bordered table-hover"
+                                                       id="sample_5">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <strong>Id</strong>
+                                                        </th>
+                                                        <th class="first-column-historic">
+                                                            <strong>Entrada</strong>
+                                                        </th>
+                                                        <th>
+                                                            <strong>Salida</strong>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="portlet_tab_3" class="tab-pane">
+                                <div class="table-scrollable">
+                                    <table role="grid" id="categorias"
+                                           class="table table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Docente</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categDoc }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Investigativa</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categInv }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Cient&iacute;fica</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categCien }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Ocupacional</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.categOcup }}</p>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="portlet_tab_2" class="tab-pane">
+                                <div class="table-scrollable">
+                                    <table role="grid" id="profesionales"
+                                           class="table table-hover">
+                                        <tbody>
+                                        {% if usuario.estudiante == true %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Estudiante</strong>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr role="row">
+                                            <td>
+                                                <strong>{% if usuario.estudiante == false %}
+                                                        Tipo de Profesional
+                                                    {% else %}
+                                                        Carrera en Salud
+                                                    {% endif %}</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.tipoPro }}</p>
+                                            </td>
+                                        </tr>
+                                        {% if usuario.estudiante == false %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Especialidad</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.especialidad }}</p>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>
+                                                <strong>{% if usuario.estudiante == false %}
+                                                        Profesi&oacute;n
+                                                    {% else %}
+                                                        Carrera fuera de Salud
+                                                    {% endif %}</strong>
+
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.profesion }}</p>
+                                            </td>
+                                        </tr>
+                                        {% if usuario.estudiante == false %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Cargo</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.cargo }}</p>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td>
+                                                <strong>Instituci&oacute;n</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.institucion }}</p>
+                                            </td>
+                                        </tr>
+                                        {% if usuario.estudiante == false %}
+                                            <tr>
+                                                <td>
+                                                    <strong>Dedicaci&oacute;n</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.dedicacion }}</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Experiencia (en a&ntilde;os)</strong>
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: right">{{ usuario.experiencia }}</p>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="portlet_tab_1"
+                                 class="tab-pane {% if active['portlet'] is not defined %} active {% endif %}">
+                                <div class="table-scrollable">
+                                    <table role="grid" id="personales"
+                                           class="table table-hover">
+                                        <tbody>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Nombre</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.nombres }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Apellidos</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.apellidos }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Carnet de Identidad</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.carnetId }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr role="row">
+                                            <td>
+                                                <strong>Pa&iacute;s</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.pais }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Correo Electr&oacute;nico</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.email }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Tel&eacute;fono</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.telefono }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Fecha de Inscripci&oacute;n</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.fechaIns|date('d/m/Y') }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Tema de Investigaci&oacute;n</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.temaInv }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Atendido por</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.atendidopor }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Observaciones</strong>
+                                            </td>
+                                            <td>
+                                                <p style="text-align: right">{{ usuario.observaciones }}</p>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div aria-hidden="false" role="dialog" tabindex="-1" id="delete" class="modal fade bs-modal-sm in"
+         style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                    <h4 class="modal-title"><i class="fa fa-warning"></i>Confirmación</h4>
+                </div>
+                <div class="modal-body">
+                    Si elimina este usuario, se borrar&aacute;n tambi&eacute;n todos sus registros de entradas, salidas
+                    y solicitudes de servicios.
+                    ¿Está seguro que desea eliminar este usuario?
+                </div>
+                <div class="modal-footer">
+                    <a id="eliminar" class="btn blue"
+                       href="{{ path('usuario_eliminar',{'modulo':'usuario', 'id':usuario.id}) }}">Si</a>
+                    <button data-dismiss="modal" class="btn default" type="button">No</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div aria-hidden="false" role="dialog" tabindex="-1" id="citas" class="modal fade bs-modal-sm in"
+         style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button"></button>
+                    <h4 class="modal-title"><i class="fa fa-reply"></i>&nbsp;Detalles</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong>N&uacute;mero de Citas: </strong>
+                            <span id="numCitas"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-control-static">
+                                <label for="memoCitas"><strong>Listado de Citas</strong></label><textarea id="memoCitas"
+                                                                                                          readonly="readonly"
+                                                                                                          style="height: 300px; width: 550px; resize: vertical"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-control-static">
+                                <label for="memoObs"><strong>Observaciones</strong></label><textarea id="memoObs"
+                                                                                                     readonly="readonly"
+                                                                                                     style="height: 300px; width: 250px; resize: vertical"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn blue" type="button">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+{% endblock %}
+{% block scripts %}
+    <script type="application/javascript">
+        function asd(event, id) {
+            document.getElementById('formRecepcion_usuario').value = id;
+        }
+    </script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="{{ asset('metronic/assets/global/plugins/gritter/js/jquery.gritter.js') }}"
+            type="text/javascript"></script>
+
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker_es.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/clockface/js/clockface.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/moment/min/moment.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+
+    <script type="text/javascript" src="{{ asset('metronic/assets/global/plugins/select2/select2.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/select2/select2_locale_es.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('metronic/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js') }}"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <script src="{{ asset('metronic/assets/global/scripts/metronic.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('metronic/assets/admin/layout/scripts/layout.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('metronic/assets/admin/layout/scripts/quick-sidebar.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('metronic/assets/admin/layout/scripts/demo.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('metronic/assets/admin/pages/scripts/components-pickers.js') }}"></script>
+    <script src="{{ asset('metronic/assets/admin/pages/scripts/table-advanced.js') }}"></script>
+    <script src="{{ asset('bundles/bibliografia/js/bibliografiaDatatables.js') }}"></script>
+    <script src="{{ asset('bundles/usuario/js/usuario.js') }}"></script>
+    <script src="{{ asset('bundles/usuario/js/usuarioDatatables.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            Metronic.init(); // init metronic core components
+            Layout.init(); // init current layout
+            QuickSidebar.init(); // init quick sidebar
+            Demo.init(); // init demo features
+            ComponentsPickers.init();
+            Usuario.initDetailsSpecificSelects();
+
+            var modalidadesSelect = $("#form_modalidades").select2({
+                allowClear: true,
+                placeholder: "Modalidades",
+                class_name: "form-control"
+            });
+            var idiomasSelect = $("#form_idioma").select2({
+                allowClear: true,
+                placeholder: "Idiomas",
+                class_name: "form-control"
+            });
+            var tipoDocsSelect = $("#form_tipoDocs").select2({
+                allowClear: true,
+                placeholder: "Tipos de Documentos",
+                class_name: "form-control"
+            });
+            var modalidades = [];
+            {% if app.session.get('lectFilters')['modalidades'] is defined %}
+            {% for modalidad in app.session.get('lectFilters')['modalidades'] %}
+            modalidades.push({{ modalidad }});
+            {% endfor %}
+            {% endif %}
+            modalidadesSelect.val(modalidades).trigger("change");
+            var idiomas = [];
+            {% if app.session.get('bibFilters')['idioma'] is defined %}
+            {% for idioma in app.session.get('bibFilters')['idioma'] %}
+            idiomas.push({{ idioma }});
+            {% endfor %}
+            {% endif %}
+            idiomasSelect.val(idiomas).trigger("change");
+
+            var tipoDocs = [];
+            {% if app.session.get('bibFilters')['tipoDocs'] is defined %}
+            {% for tipoDocs in app.session.get('bibFilters')['tipoDocs'] %}
+            tipoDocs.push({{ tipoDocs }});
+            {% endfor %}
+            {% endif %}
+            tipoDocsSelect.val(tipoDocs).trigger("change");
+            {% if currentlyIn %}
+            Global.notiUserCurrentlyInLib('{{ usuario.nombres }}', '{{ usuario.apellidos }}');
+            {% endif %}
+            {% if usuario.banned %}
+            Global.notiBannedUser('{{ usuario.nombres }}', '{{ usuario.apellidos }}');
+            {% endif %}
+            UsuarioDatatables.initTable1({{ usuario.id }});
+            UsuarioDatatables.initTable2({{ usuario.id }});
+            UsuarioDatatables.initTable3({{ usuario.id }});
+            UsuarioDatatables.initTable0({{ usuario.id }});
+            UsuarioDatatables.initTable4({{ usuario.id }});
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+{% endblock %}

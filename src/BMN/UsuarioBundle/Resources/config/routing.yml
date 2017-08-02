@@ -1,0 +1,67 @@
+usuario_lista:
+    path: /{modulo}/listado/
+    defaults: {_controller: UsuarioBundle:Default:listado}
+    options:
+        expose: true
+
+limpiar_filtros:
+    path: /limpiarfiltros/
+    defaults: {_controller: UsuarioBundle:Default:limpiarFiltros}
+    options:
+        expose: true
+
+busqueda_avanzada:
+    path: /avanzada/
+    defaults: {_controller: UsuarioBundle:Default:avanzada}
+
+usuario_detalles:
+    path: /{modulo}/detalles/{id}/
+    defaults: {_controller: UsuarioBundle:Default:detalles}
+    options:
+        expose: true
+
+usuario_editar:
+    path: /{modulo}/editar/{id}
+    defaults: {_controller: UsuarioBundle:Default:editar}
+    options:
+        expose: true
+
+usuario_adicionar:
+    path: /{modulo}/adicionar/
+    defaults: {_controller: UsuarioBundle:Default:adicionar}
+
+usuario_salvar:
+    pattern: /salvar/
+    defaults: {_controller: UsuarioBundle:Default:salvar}
+
+usuario_eliminar:
+    path: /{modulo}/eliminar/{id}
+    defaults: {_controller: UsuarioBundle:Default:eliminar}
+    options:
+        expose: true
+
+usuario_activar:
+    pattern:  /activar/{id}/
+    defaults: { _controller: UsuarioBundle:Default:activar}
+    options:
+        expose: true
+
+usuario_bannear:
+    path: /ban/{id}
+    defaults: {_controller: UsuarioBundle:Default:bannear}
+
+usuario_desbannear:
+    path: /unban/{id}
+    defaults: {_controller: UsuarioBundle:Default:desbannear}
+
+usuario_ajax_listado:
+    path: /getUsersList/
+    defaults: {_controller: UsuarioBundle:Default:getUsersList}
+    options:
+        expose: true
+
+usuario_excel_export:
+    path: /excel/
+    defaults: {_controller: UsuarioBundle:Default:excelExport}
+    options:
+        expose: true

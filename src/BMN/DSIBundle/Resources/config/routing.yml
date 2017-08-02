@@ -1,0 +1,43 @@
+dsi_nueva_solicitud:
+    pattern:  /nueva_solicitud/
+    defaults: { _controller: DSIBundle:Default:nuevaSolicitud}
+    options:
+        expose: true
+
+dsi_modificar_solicitud:
+    pattern:  /nueva_solicitud/{id}
+    defaults: { _controller: DSIBundle:Default:modificarSolicitud}
+    options:
+        expose: true
+
+dsi_listado_preguntas:
+    pattern:  /listado_preguntas/
+    defaults: { _controller: DSIBundle:Default:listadoPreguntas }
+
+dsi_eliminar_solicitud:
+    pattern:  /eliminar_solicitud/{id}
+    defaults: { _controller: DSIBundle:Default:eliminarSolicitud }
+    options:
+        expose: true
+
+borrar_adjunto:
+    pattern:  /borrar_adjunto/{id}
+    defaults: { _controller: DSIBundle:Default:borrarAdjunto }
+
+dsi_limpiar_filtros:
+    pattern:  /limpiar_filtros/
+    defaults: { _controller: DSIBundle:Default:limpiarFiltros }
+
+dsi_ajax_listado:
+    path: /getPreguntas/
+    defaults: {_controller: DSIBundle:Default:getPreguntas}
+    options:
+        expose: true
+
+dsi_listado_solicitudes:
+    pattern:  /solicitudes/
+    defaults: { _controller: DSIBundle:Default:listadoSolicitudes}
+
+dsi_limpiar_filtros_solicitudes:
+    pattern:  /limpiar_filtros_solicitudes/
+    defaults: { _controller: DSIBundle:Default:limpiarSolicitudesFiltros}

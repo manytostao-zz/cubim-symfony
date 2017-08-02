@@ -1,0 +1,21 @@
+navegacion_entrada:
+    pattern:  /entrada/
+    defaults: { _controller: NavegacionBundle:Default:entrada }
+
+navegacion_salida:
+    pattern:  /salida/{id}
+    defaults: { _controller: NavegacionBundle:Default:salida }
+
+navegacion_listado_entradas:
+    pattern:  /listado_entradas/
+    defaults: { _controller: NavegacionBundle:Default:listadoEntradas }
+
+navegacion_ajax_listado:
+    path: /getNavegacionEntradas/
+    defaults: {_controller: NavegacionBundle:Default:getEntradas}
+    options:
+        expose: true
+
+navegacion_limpiar_filtros:
+    pattern:  /limpiar_filtros/
+    defaults: { _controller: NavegacionBundle:Default:limpiarFiltros}

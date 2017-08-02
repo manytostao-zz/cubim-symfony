@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="ie ie6 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="ie ie7 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8 lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>
+<html class="ie ie9" lang="en"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-ie">
+<!--<![endif]-->
+
+<head>
+    <!-- Meta-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <title>CUBiM</title>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href={{ asset('app/css/bootstrap.css') }}>
+    <!-- Vendor CSS-->
+    <link rel="stylesheet" href={{ asset('vendor/fontawesome/css/font-awesome.min.css') }}>
+    <link rel="stylesheet" href={{ asset('vendor/animo/animate+animo.css') }}>
+    <link rel="stylesheet" href={{ asset('vendor/csspinner/csspinner.min.css') }}>
+    <link rel="stylesheet" href={{ asset('vendor/datetimepicker/css/bootstrap-datetimepicker.css') }}>
+    <link rel="stylesheet" href={{ asset('vendor/datetimepicker/css/bootstrap-datetimepicker.min.css') }}>
+    <link rel="shortcut icon" href={{ asset('favicon.ico') }} type="image/x-icon">
+    <link rel="icon" href={{ asset('favicon.ico') }} type="image/x-icon">
+    <!-- App CSS-->
+    <link rel="stylesheet" href={{ asset('app/css/app.css') }}>
+    <!-- START Page Custom CSS-->
+    <link rel="stylesheet" href={{ asset('local/bmn.css') }}>
+    <!-- END Page Custom CSS-->
+    <!-- Modernizr JS Script-->
+    <script src={{ asset('vendor/modernizr/modernizr.js') }} type="application/javascript"></script>
+    <!-- FastClick for mobiles-->
+    <script src={{ asset('vendor/fastclick/fastclick.js') }} type="application/javascript"></script>
+    <link rel="stylesheet" href={{ asset('local/css/ionicons.css') }}>
+    <style type="text/css">
+        .jqstooltip {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            visibility: hidden;
+            background: rgb(0, 0, 0) transparent;
+            background-color: rgba(0, 0, 0, 0.6);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+            color: white;
+            font: 10px arial, san serif;
+            text-align: left;
+            white-space: nowrap;
+            padding: 5px;
+            border: 1px solid white;
+            z-index: 10000;
+        }
+
+        .jqsfield {
+            color: white;
+            font: 10px arial, san serif;
+            text-align: left;
+        }</style>
+</head>
+
+<body>
+<!-- START Main wrapper-->
+<section class="wrapper">
+    <!-- START Top Navbar-->
+    <nav role="navigation" class="navbar navbar-default navbar-top navbar-fixed-top">
+        <!-- START navbar header-->
+        <div class="navbar-header" style="background-color: #ffffff;">
+            <a href="#" class="navbar-brand" style="background-color: #ffffff; padding: 0px">
+                <div class="brand-logo" style="background-color: #ffffff">
+                    <img style="width: 100%; height: 58px;" src={{ asset('local/img/logo_cubim.png') }} alt="Image"
+                         class="media-object img-responsive">
+                </div>
+                <div class="brand-logo-collapsed">
+                    <img style="width: 58px; height: 58px; margin-left: 5%"
+                         src={{ asset('local/img/mini_logo.jpg') }} alt="Image"
+                         class="media-object img-responsive">
+                </div>
+            </a>
+        </div>
+        <!-- END navbar header-->
+        <!-- START Nav wrapper-->
+        <div class="nav-wrapper">
+            <!-- START Left navbar-->
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#" data-toggle="aside">
+                        <em class="fa fa-align-left"></em>
+                    </a>
+                </li>
+            </ul>
+            <!-- END Left navbar-->
+            <!-- START Right Navbar-->
+            <ul class="nav navbar-nav navbar-right">
+                <!-- START Messages menu (dropdown-list)-->
+                <li>
+                    <a href={{ path('appuser_logout') }} title="Desconectar">
+                        <em class="fa fa-power-off"></em>
+                    </a>
+                </li>
+                {% if is_granted('ROLE_SUPER_ADMINISTRACIÓN') or is_granted('ROLE_ADMINISTRACIÓN') %}
+                    <li>
+                        <a data-toggle="offsidebar" href="javascript:void(0);" title="Configuraciones del Sistema">
+                            <em class="fa fa-cog"></em>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <!-- END Right Navbar-->
+        </div>
+    </nav>
+    <!-- END Top Navbar-->
+    <!-- START aside-->
+    <aside class="aside">
+        <!-- START Sidebar (left)-->
+        <nav class="sidebar">
+            <ul class="nav">
+                <!-- START user info-->
+                <li style="background-color: #6E760E">
+                    <div data-toggle="collapse-next" class="item user-block has-submenu">
+                        {% if app.session.get('avatar')[0] is defined %}{# if app.session.has('avatar') #}
+                            <!-- User picture-->
+                            <div class="user-block-picture">
+                                <img src={{ asset('local/img/users/'~app.session.get('avatar')[0].path) }}{# asset('local/img/users/'~app.session.get('avatar').path) #} alt="Avatar"
+                                     width="60" height="60"
+                                     class="img-thumbnail">
+                            </div>
+                        {% endif %}
+                        <!-- Name and Role-->
+                        <div class="user-block-info">
+                            <span class="user-block-name label"
+                                  style="font-size: 14px; font-weight: normal">Bienvenid@, {{ app.user.nombre }}</span>
+                        <span class="user-block-role label"
+                              style="text-align: left; font-size: 12px; font-weight: normal">{% for role in app.user.roles %}{{ role.name }}
+                                <br/>{% endfor %}</span>
+                        </div>
+                    </div>
+                </li>
+                <br/>
+                <!-- END user info-->
+                <!-- START Menu-->
+                <li {% if active is defined and active['sup'] == 'Panel Resumen' %}class="active" {% endif %}>
+                    <a href={{ path('otros_homepage') }} title="Panel Resumen">
+                    <em class="fa fa-dashboard"></em>
+                    <span class="item-text">Panel Resumen</span>
+                    </a>
+                </li>
+                {% if is_granted('ROLE_SUPER_ADMINISTRACIÓN') or is_granted('ROLE_RECEPCION') %}
+                    <li {% if active is defined and active['sup'] == 'recepcion' %}class="active" {% endif %}>
+                        <a href={{ path('usuario_lista', {'modulo':'recepcion'}) }} title="Recepción">
+                            <em class="fa fa-inbox"></em>
+                            <span class="item-text">Recepci&oacute;n</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_SUPER_ADMINISTRACIÓN') or is_granted('ROLE_REFERENCIA') %}
+                    <li {% if active is defined and active['sup'] == 'referencia' %}class="active" {% endif %}>
+                        <a href={{ path('usuario_lista', {'modulo':'referencia'}) }} title="Referencia">
+                            <em class="fa fa-book"></em>
+                            <span class="item-text">Referencia</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <!-- END Menu-->
+                </li>
+            </ul>
+        </nav>
+        <!-- END Sidebar (left)-->
+    </aside>
+    <aside class="offsidebar">
+        <!-- START Off Sidebar (right)-->
+        <nav class="sidebar">
+            <ul class="nav">
+                <!-- START user info-->
+                <li class="dropdown-menu-header">Configuraciones del Sistema</li>
+                <li {% if active is defined and active['sup'] == 'AppUsers' %}class="active" {% endif %}>
+                    <a href={{ path('appuser_list') }} title="Usuarios del Sistema">
+                    <em class="fa fa-user"></em>
+                    <span class="item-text">Usuarios del Sistema</span>
+                    </a>
+                </li>
+                <li {% if active is defined and active['sup'] == 'Trazas' %}class="active" {% endif %}>
+                    <a href={{ path('otros_trazas') }} title="Trazas del Sistema">
+                    <em class="fa fa-archive"></em>
+                    <span class="item-text">Trazas del Sistema</span>
+                    </a>
+                </li>
+                <li {% if active is defined and active['sup'] == 'Nomencladores' %}class="active" {% endif %}>
+                    <a href="#" title="Nomencladores" data-toggle="collapse-next" class="has-submenu">
+                        <em class="fa fa-cogs"></em>
+                        <span class="item-text">Nomencladores</span>
+                    </a>
+                    <!-- START SubMenu item-->
+                    <ul class="nav collapse  {% if active is defined and active['sup'] == 'Nomencladores' %} in {% endif %}">
+                        {% for tipoNom in app.session.get('tiposNom') %}
+                            <li {% if active is defined and active['sup'] == 'Nomencladores' and active['sub'] == tipoNom.id %}class="active" {% endif %}>
+                                <a href={{ path('nomenclador_lista', {'idTipoNom':tipoNom.id}) }} title={{ tipoNom.descripcion }}
+                                   data-toggle="" class="no-submenu">
+                                    <span class="item-text">{{ tipoNom.descripcion }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <!-- END SubMenu item-->
+                </li>
+            </ul>
+        </nav>
+        <!-- END Off Sidebar (right)-->
+    </aside>
+    <!-- START Main section-->
+    <section>
+        {% block header %} {% endblock %}
+        <!-- START Page content-->
+        {% block body %} {% endblock %}
+        <!-- END Page content-->
+    </section>
+    <!-- END Main section-->
+</section>
+
+{% block modal %}
+{% endblock %}
+
+<!-- START Scripts-->
+<script src={{ asset('vendor/jquery/jquery.min.js') }}></script>
+<script src={{ asset('vendor/bootstrap/js/bootstrap.min.js') }}></script>
+<script src={{ asset('vendor/chosen/chosen.jquery.min.js') }}></script>
+<script src={{ asset('vendor/slider/js/bootstrap-slider.js') }}></script>
+<script src={{ asset('vendor/filestyle/bootstrap-filestyle.min.js') }}></script>
+<script src={{ asset('vendor/animo/animo.min.js') }}></script>
+<script src={{ asset('vendor/sparklines/jquery.sparkline.min.js') }}></script>
+<script src={{ asset('vendor/slimscroll/jquery.slimscroll.min.js') }}></script>
+<script src={{ asset('vendor/codemirror/lib/codemirror.js') }}></script>
+<script src={{ asset('vendor/codemirror/addon/mode/overlay.js') }}></script>
+<script src={{ asset('vendor/codemirror/mode/markdown/markdown.js') }}></script>
+<script src={{ asset('vendor/codemirror/mode/xml/xml.js') }}></script>
+<script src={{ asset('vendor/codemirror/mode/gfm/gfm.js') }}></script>
+<script src={{ asset('vendor/marked/marked.js') }}></script>
+<script src={{ asset('vendor/moment/min/moment.min.js') }}></script>
+<script src={{ asset('vendor/moment/lang/es.js') }}></script>
+<script src={{ asset('vendor/datetimepicker/js/bootstrap-datetimepicker.min.js') }}></script>
+<script src={{ asset('vendor/tagsinput/bootstrap-tagsinput.min.js') }}></script>
+<script src={{ asset('vendor/inputmask/jquery.inputmask.bundle.min.js') }}></script>
+<script src={{ asset('vendor/flot/jquery.flot.min.js') }}></script>
+<script src={{ asset('vendor/flot/jquery.flot.tooltip.min.js') }}></script>
+<script src={{ asset('vendor/flot/jquery.flot.resize.min.js') }}></script>
+<script src={{ asset('vendor/flot/jquery.flot.pie.min.js') }}></script>
+<script src={{ asset('vendor/flot/jquery.flot.time.min.js') }}></script>
+<script src={{ asset('vendor/flot/jquery.flot.categories.min.js') }}></script>
+<script src={{ asset('app/js/app.js') }}></script>
+
+<!-- END Scripts-->
+<div class="uk-notify uk-notify-top-center" style="display: none;"></div>
+
+<div style="z-index: 9999 ! important; display: none;" class="bootstrap-datetimepicker-widget dropdown-menu">
+<ul class="list-unstyled">
+<li class="collapse in">
+    <div class="datepicker">
+        <div class="datepicker-days" style="display: block;">
+            <table class="table-condensed">
+                <thead>
+                <tr>
+                    <th class="prev">‹</th>
+                    <th class="switch" colspan="5">September 2014</th>
+                    <th class="next">›</th>
+                </tr>
+                <tr>
+                    <th class="dow">Su</th>
+                    <th class="dow">Mo</th>
+                    <th class="dow">Tu</th>
+                    <th class="dow">We</th>
+                    <th class="dow">Th</th>
+                    <th class="dow">Fr</th>
+                    <th class="dow">Sa</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="day old">31</td>
+                    <td class="day">1</td>
+                    <td class="day">2</td>
+                    <td class="day">3</td>
+                    <td class="day">4</td>
+                    <td class="day">5</td>
+                    <td class="day">6</td>
+                </tr>
+                <tr>
+                    <td class="day">7</td>
+                    <td class="day">8</td>
+                    <td class="day">9</td>
+                    <td class="day">10</td>
+                    <td class="day">11</td>
+                    <td class="day">12</td>
+                    <td class="day">13</td>
+                </tr>
+                <tr>
+                    <td class="day">14</td>
+                    <td class="day">15</td>
+                    <td class="day">16</td>
+                    <td class="day">17</td>
+                    <td class="day">18</td>
+                    <td class="day">19</td>
+                    <td class="day active today">20</td>
+                </tr>
+                <tr>
+                    <td class="day">21</td>
+                    <td class="day">22</td>
+                    <td class="day">23</td>
+                    <td class="day">24</td>
+                    <td class="day">25</td>
+                    <td class="day">26</td>
+                    <td class="day">27</td>
+                </tr>
+                <tr>
+                    <td class="day">28</td>
+                    <td class="day">29</td>
+                    <td class="day">30</td>
+                    <td class="day new">1</td>
+                    <td class="day new">2</td>
+                    <td class="day new">3</td>
+                    <td class="day new">4</td>
+                </tr>
+                <tr>
+                    <td class="day new">5</td>
+                    <td class="day new">6</td>
+                    <td class="day new">7</td>
+                    <td class="day new">8</td>
+                    <td class="day new">9</td>
+                    <td class="day new">10</td>
+                    <td class="day new">11</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="datepicker-months" style="display: none;">
+            <table class="table-condensed">
+                <thead>
+                <tr>
+                    <th class="prev">‹</th>
+                    <th class="switch" colspan="5">2014</th>
+                    <th class="next">›</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="7"><span class="month">Jan</span><span class="month">Feb</span><span
+                                class="month">Mar</span><span class="month">Apr</span><span
+                                class="month">May</span><span class="month">Jun</span><span
+                                class="month">Jul</span><span class="month">Aug</span><span
+                                class="month active">Sep</span><span class="month">Oct</span><span
+                                class="month">Nov</span><span class="month">Dec</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="datepicker-years" style="display: none;">
+            <table class="table-condensed">
+                <thead>
+                <tr>
+                    <th class="prev">‹</th>
+                    <th class="switch" colspan="5">2010-2019</th>
+                    <th class="next">›</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="7"><span class="year old">2009</span><span class="year">2010</span><span
+                                class="year">2011</span><span class="year">2012</span><span
+                                class="year">2013</span><span class="year active">2014</span><span
+                                class="year">2015</span><span
+                                class="year">2016</span><span class="year">2017</span><span
+                                class="year">2018</span><span class="year">2019</span><span class="year old">2020</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</li>
+<li class="picker-switch accordion-toggle"><a style="width:100%" class="btn"><span class="fa fa-clock-o"></span></a>
+</li>
+<li class="collapse">
+    <div class="timepicker">
+        <div class="timepicker-picker">
+            <table class="table-condensed">
+                <tbody>
+                <tr>
+                    <td><a data-action="incrementHours" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-up"></span></a></td>
+                    <td class="separator"></td>
+                    <td><a data-action="incrementMinutes" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-up"></span></a></td>
+                    <td class="separator"></td>
+                </tr>
+                <tr>
+                    <td><span class="timepicker-hour" data-time-component="hours"
+                              data-action="showHours">10</span></td>
+                    <td class="separator">:</td>
+                    <td><span class="timepicker-minute" data-time-component="minutes"
+                              data-action="showMinutes">38</span>
+                    </td>
+                    <td class="separator"></td>
+                    <td>
+                        <button data-action="togglePeriod" class="btn btn-primary" type="button">AM</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a data-action="decrementHours" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-down"></span></a></td>
+                    <td class="separator"></td>
+                    <td><a data-action="decrementMinutes" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-down"></span></a></td>
+                    <td class="separator"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div data-action="selectHour" class="timepicker-hours" style="display: none;">
+            <table class="table-condensed">
+                <tbody>
+                <tr>
+                    <td class="hour">01</td>
+                    <td class="hour">02</td>
+                    <td class="hour">03</td>
+                    <td class="hour">04</td>
+                </tr>
+                <tr>
+                    <td class="hour">05</td>
+                    <td class="hour">06</td>
+                    <td class="hour">07</td>
+                    <td class="hour">08</td>
+                </tr>
+                <tr>
+                    <td class="hour">09</td>
+                    <td class="hour">10</td>
+                    <td class="hour">11</td>
+                    <td class="hour">12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div data-action="selectMinute" class="timepicker-minutes" style="display: none;">
+            <table class="table-condensed">
+                <tbody>
+                <tr>
+                    <td class="minute">00</td>
+                    <td class="minute">05</td>
+                    <td class="minute">10</td>
+                    <td class="minute">15</td>
+                </tr>
+                <tr>
+                    <td class="minute">20</td>
+                    <td class="minute">25</td>
+                    <td class="minute">30</td>
+                    <td class="minute">35</td>
+                </tr>
+                <tr>
+                    <td class="minute">40</td>
+                    <td class="minute">45</td>
+                    <td class="minute">50</td>
+                    <td class="minute">55</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</li>
+</ul>
+</div>
+
+<div class="bootstrap-datetimepicker-widget dropdown-menu" style="display: none;">
+    <div class="timepicker">
+        <div class="timepicker-picker">
+            <table class="table-condensed">
+                <tbody>
+                <tr>
+                    <td><a data-action="incrementHours" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-up"></span></a></td>
+                    <td class="separator"></td>
+                    <td><a data-action="incrementMinutes" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-up"></span></a></td>
+                    <td class="separator"></td>
+                </tr>
+                <tr>
+                    <td><span class="timepicker-hour" data-time-component="hours" data-action="showHours">10</span></td>
+                    <td class="separator">:</td>
+                    <td><span class="timepicker-minute" data-time-component="minutes"
+                              data-action="showMinutes">38</span></td>
+                    <td class="separator"></td>
+                    <td>
+                        <button data-action="togglePeriod" class="btn btn-primary" type="button">AM</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a data-action="decrementHours" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-down"></span></a></td>
+                    <td class="separator"></td>
+                    <td><a data-action="decrementMinutes" class="btn" href="javascript:void(0);"><span
+                                    class="fa fa-arrow-down"></span></a></td>
+                    <td class="separator"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div data-action="selectHour" class="timepicker-hours" style="display: none;">
+            <table class="table-condensed">
+                <tbody>
+                <tr>
+                    <td class="hour">01</td>
+                    <td class="hour">02</td>
+                    <td class="hour">03</td>
+                    <td class="hour">04</td>
+                </tr>
+                <tr>
+                    <td class="hour">05</td>
+                    <td class="hour">06</td>
+                    <td class="hour">07</td>
+                    <td class="hour">08</td>
+                </tr>
+                <tr>
+                    <td class="hour">09</td>
+                    <td class="hour">10</td>
+                    <td class="hour">11</td>
+                    <td class="hour">12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div data-action="selectMinute" class="timepicker-minutes" style="display: none;">
+            <table class="table-condensed">
+                <tbody>
+                <tr>
+                    <td class="minute">00</td>
+                    <td class="minute">05</td>
+                    <td class="minute">10</td>
+                    <td class="minute">15</td>
+                </tr>
+                <tr>
+                    <td class="minute">20</td>
+                    <td class="minute">25</td>
+                    <td class="minute">30</td>
+                    <td class="minute">35</td>
+                </tr>
+                <tr>
+                    <td class="minute">40</td>
+                    <td class="minute">45</td>
+                    <td class="minute">50</td>
+                    <td class="minute">55</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="bootstrap-datetimepicker-widget dropdown-menu top"
+     style="display: none; position: absolute; top: 204.533px; left: 696.5px; right: auto;">
+    <div class="datepicker">
+        <div class="datepicker-days" style="display: block;">
+            <table class="table-condensed">
+                <thead>
+                <tr>
+                    <th class="prev">‹</th>
+                    <th class="switch" colspan="5">September 2014</th>
+                    <th class="next">›</th>
+                </tr>
+                <tr>
+                    <th class="dow">Su</th>
+                    <th class="dow">Mo</th>
+                    <th class="dow">Tu</th>
+                    <th class="dow">We</th>
+                    <th class="dow">Th</th>
+                    <th class="dow">Fr</th>
+                    <th class="dow">Sa</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="day old">31</td>
+                    <td class="day">1</td>
+                    <td class="day">2</td>
+                    <td class="day">3</td>
+                    <td class="day">4</td>
+                    <td class="day">5</td>
+                    <td class="day">6</td>
+                </tr>
+                <tr>
+                    <td class="day">7</td>
+                    <td class="day">8</td>
+                    <td class="day">9</td>
+                    <td class="day">10</td>
+                    <td class="day">11</td>
+                    <td class="day">12</td>
+                    <td class="day">13</td>
+                </tr>
+                <tr>
+                    <td class="day">14</td>
+                    <td class="day">15</td>
+                    <td class="day">16</td>
+                    <td class="day">17</td>
+                    <td class="day">18</td>
+                    <td class="day">19</td>
+                    <td class="day today">20</td>
+                </tr>
+                <tr>
+                    <td class="day">21</td>
+                    <td class="day">22</td>
+                    <td class="day">23</td>
+                    <td class="day">24</td>
+                    <td class="day">25</td>
+                    <td class="day">26</td>
+                    <td class="day">27</td>
+                </tr>
+                <tr>
+                    <td class="day">28</td>
+                    <td class="day active">29</td>
+                    <td class="day">30</td>
+                    <td class="day new">1</td>
+                    <td class="day new">2</td>
+                    <td class="day new">3</td>
+                    <td class="day new">4</td>
+                </tr>
+                <tr>
+                    <td class="day new">5</td>
+                    <td class="day new">6</td>
+                    <td class="day new">7</td>
+                    <td class="day new">8</td>
+                    <td class="day new">9</td>
+                    <td class="day new">10</td>
+                    <td class="day new">11</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="datepicker-months" style="display: none;">
+            <table class="table-condensed">
+                <thead>
+                <tr>
+                    <th class="prev">‹</th>
+                    <th class="switch" colspan="5">2014</th>
+                    <th class="next">›</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="7"><span class="month">Jan</span><span class="month">Feb</span><span
+                                class="month">Mar</span><span class="month">Apr</span><span
+                                class="month">May</span><span class="month">Jun</span><span
+                                class="month">Jul</span><span class="month">Aug</span><span
+                                class="month active">Sep</span><span class="month">Oct</span><span
+                                class="month">Nov</span><span class="month">Dec</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="datepicker-years" style="display: none;">
+            <table class="table-condensed">
+                <thead>
+                <tr>
+                    <th class="prev">‹</th>
+                    <th class="switch" colspan="5">2010-2019</th>
+                    <th class="next">›</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="7"><span class="year old">2009</span><span class="year">2010</span><span class="year">2011</span><span
+                                class="year">2012</span><span class="year">2013</span><span
+                                class="year active">2014</span><span class="year">2015</span><span
+                                class="year">2016</span><span class="year">2017</span><span
+                                class="year">2018</span><span class="year">2019</span><span class="year old">2020</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

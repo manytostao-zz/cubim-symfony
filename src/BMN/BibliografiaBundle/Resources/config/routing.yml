@@ -1,0 +1,49 @@
+bibliografia_salvar_solicitud:
+    pattern:  /solicitud/
+    defaults: { _controller: BibliografiaBundle:Default:salvarSolicitud}
+
+bibliografia_listado_solicitudes:
+    pattern:  /solicitudes/
+    defaults: { _controller: BibliografiaBundle:Default:listadoSolicitudes}
+
+bibliografia_ajax_listado:
+    path: /getSolicitudes/
+    defaults: {_controller: BibliografiaBundle:Default:getSolicitudes}
+    options:
+        expose: true
+
+bibliografia_eliminar_solicitud:
+    pattern:  /elimininar/{id}
+    defaults: { _controller: BibliografiaBundle:Default:eliminarSolicitud}
+    options:
+        expose: true
+
+bibliografia_limpiar_filtros:
+    pattern:  /limpiar_filtros/
+    defaults: { _controller: BibliografiaBundle:Default:limpiarFiltros}
+
+bibliografia_respuesta:
+    pattern:  /respuesta/
+    defaults: { _controller: BibliografiaBundle:Default:adicionarRespuesta}
+
+bibliografia_respuestas:
+    pattern:  /respuestas/{id}
+    defaults: { _controller: BibliografiaBundle:Default:respuestas}
+    options:
+        expose: true
+
+bibliografia_exportar_modelo:
+    pattern:  /exportar_modelo/{id}
+    defaults: { _controller: BibliografiaBundle:Default:exportarModelo}
+    options:
+        expose: true
+
+bibliografia_auto_servicio:
+    pattern:  /autoServicio/
+    defaults: { _controller: BibliografiaBundle:Default:autoServicio}
+
+bibliografia_editar_solicitud:
+    pattern:  /editar/{id}/{userId}
+    defaults: { _controller: BibliografiaBundle:Default:editarSolicitud}
+    options:
+        expose: true

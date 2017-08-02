@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>CUBiM | Bibliografía</title>
+</head>
+<body>
+<div class="row">
+    <img src="{{ asset('local/img/model_header_biblio.jpg') }}" style="width: 650px"/>
+</div>
+<div class="row">
+    <table style="width: 100%">
+        <thead>
+        <tr>
+            <th colspan="2" style="text-align: left">
+                <strong style="color: #6eb43f; font-size: large">Datos Personales del Usuario</strong>
+                <br/>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                Nombre y apellidos:
+            </td>
+            <td>
+                {{ bibliografia.usuario.nombres }}
+                {{ bibliografia.usuario.apellidos }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Instituci&oacute;n:
+            </td>
+            <td>
+                {{ bibliografia.usuario.institucion }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Tipo de Profesional:
+            </td>
+            <td>
+                {{ bibliografia.usuario.tipoPro }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Correo electr&oacute;nico:
+            </td>
+            <td>
+                {{ bibliografia.usuario.email }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Fecha de recibo (solicitud):
+            </td>
+            <td>
+                {{ bibliografia.fechaSolicitud|date('d/m/y') }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Fecha de env&iacute;o (respuesta):
+            </td>
+            <td>
+                {{ bibliografiaRespuesta.fechaRespuesta|date('d/m/y') }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Atendido por:
+            </td>
+            <td>
+                {{ bibliografiaRespuesta.appUser }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <table>
+        <tbody>
+        <tr>
+            <td><strong style="color: #6eb43f; font-size: large">Tema solicitado:</strong></td>
+            <td>{{ bibliografia.tema }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <table>
+        <tbody>
+        <tr>
+            <td><strong style="color: #6eb43f; font-size: large">Descriptores utilizados:</strong></td>
+            <td>{{ bibliografiaRespuesta.descriptores }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <table>
+        <tbody>
+        <tr>
+            <td><strong style="color: #6eb43f; font-size: large">No. Citas Relevantes:
+                    &nbsp;</strong>{{ bibliografiaRespuesta.citasRelevantes }}</td>
+            <td><strong style="color: #6eb43f; font-size: large">No. Citas Pertinentes:
+                    &nbsp;</strong>{{ bibliografiaRespuesta.citasPertinentes }}</td>
+        </tr>
+        <tr>
+            <td><i>(Relacionadas con el tema)</i></td>
+            <td><i>(Con exactitud al tema)</i></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <table>
+        <tr>
+            <td>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><strong style="color: #6eb43f; font-size: large">Fuentes Consultadas:</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for fuenteInfo in bibliografiaRespuesta.fuentesInfo %}
+                        <tr>
+                            <td>{{ fuenteInfo }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><strong style="color: #6eb43f; font-size: large">Observaciones:</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ bibliografiaRespuesta.observaciones }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+</body>
+</html>

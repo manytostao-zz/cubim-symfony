@@ -1,0 +1,18 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Editar Usuario{% endblock %}
+{% block article %}
+    <div class="art-postcontent">
+        <h3>Editar Usuario</h3>
+    </div>
+    <br/>
+
+    <fieldset>
+    <legend>Valores de Usuario</legend>
+
+        <form action="" method="post" {{
+        form_enctype(formulario) }}>
+            {{ form_widget(formulario) }}
+            <input class="boton" type="submit" value="Registrarme" />
+        </form>
+    </fieldset>
+{% endblock %}

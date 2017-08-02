@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div class="row">
+    <table>
+        <thead>
+        <tr>
+            <th><strong style="color: #6eb43f; font-size: large">Bibliograf&iacute;a:</strong></th>
+        </tr>
+        <tr>
+            <th><i>(Estilo bibliogr&aacute;fico: {{ bibliografia.estilo }})</i></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cita in citas %}
+            <tr>
+                <td>{{ cita }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

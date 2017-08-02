@@ -1,0 +1,27 @@
+lectura_listado_entradas:
+    pattern:  /listado_entradas/
+    defaults: { _controller: LecturaBundle:Default:listadoEntradas }
+
+lectura_entrada:
+    pattern:  /entrada/
+    defaults: { _controller: LecturaBundle:Default:entrada }
+
+lectura_salida:
+    pattern:  /salida/{id}
+    defaults: { _controller: LecturaBundle:Default:salida }
+
+lectura_ajax_listado:
+    path: /getEntradas/
+    defaults: {_controller: LecturaBundle:Default:getEntradas}
+    options:
+        expose: true
+
+lectura_ajax_detalle:
+    path: /getDetalles/{id}
+    defaults: {_controller: LecturaBundle:Default:getModalidadDetalles}
+    options:
+        expose: true
+
+lectura_limpiar_filtros:
+    pattern:  /limpiar_filtros/
+    defaults: { _controller: LecturaBundle:Default:limpiarFiltros}

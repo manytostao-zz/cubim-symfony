@@ -1,0 +1,55 @@
+security:
+    encoders:
+        BMN\AppUserBundle\Entity\AppUser: {algorithm: sha512, iterations: 10}
+
+    providers:
+        appusers:
+            entity: {class: BMN\AppUserBundle\Entity\AppUser, property: username}
+
+    firewalls:
+        frontend:
+            pattern:  ^/*
+            anonymous: ~
+            form_login:
+                login_path: appuser_login
+                check_path: appuser_login_check
+                default_target_path: /panel
+                always_use_default_target_path: true
+            logout:
+                path: appuser_logout
+            remember_me:
+                key: bmn1234
+                lifetime: 3600
+
+    role_hierarchy:
+        ROLE_SUPER_ADMINISTRACIÓN: [ROLE_ADMINISTRACIÓN, ROLE_REGISTRO, ROLE_RECEPCION, ROLE_REFERENCIA, ROLE_BIBLIOGRAFIA, ROLE_DSI, ROLE_LECTURA, ROLE_NAVEGACION]
+
+    access_control:
+        - { path: ^/autoServicio/, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/appuser/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/appuser/lock, roles: [ROLE_ADMINISTRACIÓN, ROLE_RECEPCION, ROLE_REFERENCIA, ROLE_BIBLIOGRAFIA, ROLE_DSI,ROLE_LECTURA, ROLE_NAVEGACION]}
+        - { path: ^/appuser/perfil/*, roles: IS_AUTHENTICATED_FULLY}
+        - { path: ^/appuser/*, roles: [ROLE_ADMINISTRACIÓN]}
+        - { path: ^/trazas/*, roles: [ROLE_ADMINISTRACIÓN, ROLE_RECEPCION, ROLE_REFERENCIA, ROLE_BIBLIOGRAFIA, ROLE_DSI,ROLE_LECTURA, ROLE_NAVEGACION]}
+        - { path: ^/nomenclador/listado_ajax/*, roles: IS_AUTHENTICATED_FULLY}
+        - { path: ^/nomenclador/ajax_list/*, roles: IS_AUTHENTICATED_FULLY}
+        - { path: ^/nomenclador/*, roles: [ROLE_ADMINISTRACIÓN]}
+        - { path: ^/usuario/getUsersList/, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/usuario/salvar/*, roles: [ROLE_RECEPCION]}
+        - { path: ^/usuario/referencia/*, roles: [ROLE_REFERENCIA]}
+        - { path: ^/usuario/recepcion/*, roles: [ROLE_RECEPCION]}
+        - { path: ^/usuario/bibliografia/*, roles: [ROLE_BIBLIOGRAFIA]}
+        - { path: ^/usuario/dsi/*, roles: [ROLE_DSI]}
+        - { path: ^/usuario/navegacion/*, roles: [ROLE_NAVEGACION]}
+        - { path: ^/usuario/lectura/*, roles: [ROLE_LECTURA]}
+        - { path: ^/usuario/*, roles: [ROLE_REGISTRO]}
+        - { path: ^/recepcion/*, roles: [ROLE_RECEPCION]}
+        - { path: ^/referencia/*, roles: [ROLE_REFERENCIA]}
+        - { path: ^/bibliografia/editar/, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/bibliografia/autoServicio/*, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/bibliografia/solicitud/*, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/bibliografia/getSolicitudes/*, roles: [ROLE_BIBLIOGRAFIA, ROLE_REFERENCIA, ROLE_DSI]}
+        - { path: ^/bibliografia/respuestas/*, roles: [ROLE_BIBLIOGRAFIA, ROLE_REFERENCIA, ROLE_DSI]}
+        - { path: ^/bibliografia/respuesta/*, roles: [ROLE_BIBLIOGRAFIA, ROLE_REFERENCIA, ROLE_DSI]}
+        - { path: ^/bibliografia/*, roles: [ROLE_BIBLIOGRAFIA]}
+        - { path: ^/panel/*, roles: IS_AUTHENTICATED_FULLY}

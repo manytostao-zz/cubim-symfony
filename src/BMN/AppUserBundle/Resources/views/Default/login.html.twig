@@ -1,0 +1,38 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Formulario de acceso{% endblock %}
+{% block id 'usuario' %}
+    {% block article %}
+        <div class="art-postmetadataheader">
+            <h3>Formulario de Acceso</h3>
+        </div>
+        <br/>
+        <div>
+            <div style="width: 50%; vertical-align: middle; text-align: left; padding-left: 25%">
+                <fieldset>
+                    <legend>Introduzca sus datos</legend>
+                    <br/>
+                    {% if error %}
+                        <div>{{ error.message }}<br/><br/></div>
+                    {% endif %}
+                    <div style="vertical-align: middle; text-align: left">
+                        <form action="{{ path('appuser_login_check') }}" method="post">
+                            <label for="username">Usuario:</label>
+                            <input type="text" id="username" name="_username"
+                                   value="{{ last_username }}"/>
+                            <br/><br/>
+                            <label for="password">Contraseña:</label>
+                            <input type="password" id="password" name="_password"/>
+                            <br/><br/>
+                            <input type="checkbox" id="no_cerrar" name="_remember_me" checked />
+                            <label for="no_cerrar">No cerrar sesión</label>
+                            <br/><br/>
+                            <div style="text-align: center"><input type="submit" class="art-button" name="login"
+                                                                   value="Acceder"/></div>
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    {% endblock %}
+    {% block aside %}
+    {% endblock %}
